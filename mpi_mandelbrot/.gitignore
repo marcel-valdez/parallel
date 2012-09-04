@@ -2,7 +2,6 @@
 *.o
 *.log
 **/*.in
-bin
 *.cache
 Makefile
 src/Makefile
@@ -16,7 +15,6 @@ install-sh
 *.o
 *.log
 **/*.in
-bin
 *.cache
 Makefile
 src/Makefile
