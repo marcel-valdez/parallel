@@ -33,6 +33,8 @@ int main(int arg_count, char * args[])
 		if (rows > 100 || cols > 100) {
 			printf("Writing image file: %s\n", args[arg_count]);
 			write_to_file(data, rows, cols, args[arg_count]);
+			printf("Printing part of the mandelbrot:\n");
+			print_mandelbrot(data, 40, 80);
 		} else {
 			printf("Printing mandelbrot\n");
 			print_mandelbrot(data, rows, cols);
