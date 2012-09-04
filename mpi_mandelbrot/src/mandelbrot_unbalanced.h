@@ -140,7 +140,9 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 		printf("}");
 		#endif
 	}
+	
 	printf("Slave %d is sending data back to the server\n", my_proc_idx);
+	print_mandelbrot(my_rows, rows_slice, cols);
 	MPI_Send(
 		my_rows,
 		rows_slice * cols,
