@@ -95,7 +95,7 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 	int row = 0;
 	for(row = 0; row < rows_slice; row++)
 	{
-		int y = row + (my_proc_idx * (total_rows / total_procs));
+		int y = row + ((my_proc_idx - 1) * rows_per_proc);
 		#ifdef DEBUG
 		printf("\nrow: %d\n", y);
 		#endif

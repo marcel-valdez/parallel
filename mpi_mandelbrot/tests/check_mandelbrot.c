@@ -210,12 +210,12 @@ START_TEST (test_slave)
 	const int total_rows = 480;
 	int data[total_rows][cols];
 	zero_out(data, total_rows, cols);
-	int total_procs = 4;
+	int total_procs = 5;
 	respond_buf_addr = data;
 	
 	/* Act */
-	int i = 0;
-	for (i = 0; i < total_procs; i++) {
+	int i = 1;
+	for (i = 1; i < total_procs; i++) {
 		/* Se construye el mandelbrot por partes */
 		int proc_idx = i;
 		mandelbrot_slave(data, total_rows, cols, proc_idx, total_procs);
