@@ -31,7 +31,7 @@ int main(int arg_count, char * args[])
 	if (my_proc_index == 0)
 	{
 		if (rows > 100 || cols > 100) {
-			printf("Writing image file\n");
+			printf("Writing image file: %s\n", args[arg_count]);
 			write_to_file(data, rows, cols, args[arg_count]);
 		} else {
 			printf("Printing mandelbrot\n");
