@@ -30,8 +30,10 @@ int main(int arg_count, char * args[])
 	if (my_proc_index == 0)
 	{
 		if (rows > 100 || cols > 100) {
-			write_to_file(data, rows, cols, "mandelbrot.png");
+			printf("Writing image file");
+			write_to_file(data, rows, cols, "mandelbrot.bmp");
 		} else {
+			printf("Printing mandelbrot");
 			print_mandelbrot(data, rows, cols);
 		}
 	}

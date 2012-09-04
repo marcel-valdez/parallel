@@ -66,9 +66,7 @@ void mandelbrot_master(int **result, int rows, int cols, int proc_count)
 void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, int total_procs)
 {
 	printf("Slave: %d starting\n", my_proc_idx);
-	#ifdef DEBUG
-	printf("Starting slave.\n");
-	#endif
+
 	long unsigned int rows_addr = my_rows;
 	
 	double min_real = - 2.0;
@@ -151,7 +149,7 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 		1,
 		MPI_COMM_WORLD);
 	
-	printf("Slave %d is dying now.\n");
+	printf("Slave %d is dying now.\n", my_proc_idx);
 }
 
 #endif /* MANDELBROT_H */
