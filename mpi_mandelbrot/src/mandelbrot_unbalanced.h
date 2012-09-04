@@ -39,7 +39,7 @@ void mandelbrot_master(int **result, int rows, int cols, int proc_count)
 		
 		// Variable para renglones a enviar
 		int** rows_to_send = rows_to_send_addr;
-		printf("Master is sending data to Slave %d", i);
+		printf("Master is sending data to Slave %d\n", i);
 		MPI_Send(rows_to_send, current_rows_slice * cols, MPI_INT, i, 1, MPI_COMM_WORLD);
 	}
 	
@@ -50,7 +50,7 @@ void mandelbrot_master(int **result, int rows, int cols, int proc_count)
 		long unsigned int rows_to_receive_addr = result_addr + (rows_slice * cols * (i - 1) * INT_SIZE);
 		int** rows_to_receive = rows_to_receive_addr;
 		int current_rows_slice = i == proc_count - 1 ? rows_slice + remainder : rows_slice;
-		printf("Master is waiting on Slave %d", i);
+		printf("Master is waiting on Slave %d\n", i);
 		MPI_Recv(
 			rows_to_receive,  /* where to store rows */
 			current_rows_slice * cols, /* amount of data to receive */
@@ -89,10 +89,10 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 	MPI_Status* status;
 	
 	/* Wait for rows from master */
-	printf("Slave: %d is waiting for data from master", my_proc_idx);
+	printf("Slave: %d is waiting for data from master\n", my_proc_idx);
 	MPI_Recv(my_rows, rows_slice * cols, MPI_INT, 0, 1, MPI_COMM_WORLD, &status);
 	
-	printf("Slave %d woke up and is about to calculate", my_proc_idx);
+	printf("Slave %d woke up and is about to calculate\n", my_proc_idx);
 	/* Calculate mandelbrot! */
 	int row = 0;
 	for(row = 0; row < rows_slice; row++)
@@ -142,7 +142,7 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 		printf("}");
 		#endif
 	}
-	printf("Slave %d is sending data back to the server", my_proc_idx);
+	printf("Slave %d is sending data back to the server\n", my_proc_idx);
 	MPI_Send(
 		my_rows,
 		rows_slice * cols,
@@ -151,7 +151,7 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 		1,
 		MPI_COMM_WORLD);
 	
-	printf("Slave %d is dying now.");
+	printf("Slave %d is dying now.\n");
 }
 
 #endif /* MANDELBROT_H */
