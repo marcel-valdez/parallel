@@ -206,16 +206,20 @@ START_TEST (test_slave)
 	printf("******************************\n");
 	
 	/* Arrange */
-	const int cols = 1024;
-	const int total_rows = 720;
+	const int cols = 640;
+	const int total_rows = 480;
 	int data[total_rows][cols];
 	zero_out(data, total_rows, cols);
-	int proc_idx = 0;
-	int total_procs = 1;
+	int total_procs = 4;
 	respond_buf_addr = data;
 	
 	/* Act */
-	mandelbrot_slave(data, total_rows, cols, proc_idx, total_procs);
+	int i = 0;
+	for (i = 0; i < total_procs; i++) {
+		/* Se construye el mandelbrot por partes */
+		int proc_idx = i;
+		mandelbrot_slave(data, total_rows, cols, proc_idx, total_procs);
+	}
 	
 	/* Assert */
 	/*

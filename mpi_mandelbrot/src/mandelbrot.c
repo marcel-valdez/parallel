@@ -22,7 +22,7 @@ int main(int arg_count, char * args[])
         }
         else
         {
-                mandelbrot_slave(data, rows, cols, my_proc, num_procs);
+                mandelbrot_slave(data, rows, cols, my_proc_index, num_procs);
         }
 
 	end();
@@ -32,7 +32,7 @@ int main(int arg_count, char * args[])
 		if (rows > 100 || cols > 100) {
 			write_to_file(data, rows, cols, "mandelbrot.png");
 		} else {
-			print_mandelbrot(data);
+			print_mandelbrot(data, rows, cols);
 		}
 	}
 	

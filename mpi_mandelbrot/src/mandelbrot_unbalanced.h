@@ -6,6 +6,11 @@
 #define SQR(X) ((X) * (X))
 #define MAX_ITERATIONS 1000
 
+#ifndef INT_SIZE_SET
+#define INT_SIZE_SET
+const int INT_SIZE = sizeof(int);
+#endif
+
 #ifndef bool
 	#define bool char
 	#define true 1

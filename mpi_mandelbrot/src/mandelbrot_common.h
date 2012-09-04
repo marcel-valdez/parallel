@@ -2,12 +2,16 @@
 #include "stb_image_write.h"
 
 // Initialization stuff
+#ifndef INT_SIZE_SET
+#define INT_SIZE_SET
 const int INT_SIZE = sizeof(int);
+#endif
 int my_proc_index = -1;
 int num_procs = -1;
 
 void init_array(int *array[], int rows, int cols)
 {
+	printf("Initializing array with weird values");
 	int k = 0;
 	long unsigned int array_address = array;
 #ifdef DEBUG
