@@ -14,6 +14,7 @@ echo "----------------------------------------"
 echo "Testing for Standard I/O headers"
 echo "----------------------------------------"
 AC_CHECK_HEADERS(stdio.h)
+AM_PROG_CC_C_O
 
 echo "----------------------------------------"
 echo "Testing for MPI headers"

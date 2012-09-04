@@ -27,3 +27,4 @@ install-sh
 **/*.swp
 config.status
 tests/.deps/
+compile
