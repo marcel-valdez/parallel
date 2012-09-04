@@ -15,6 +15,7 @@ int main(int arg_count, char * args[])
 	int rows = 480;
 	int cols = 640;
 	int data[rows][cols];
+	arg_count = arg_count - 1;
 	start(arg_count, args, rows, cols);
         if (my_proc_index == 0)
         {
@@ -31,7 +32,7 @@ int main(int arg_count, char * args[])
 	{
 		if (rows > 100 || cols > 100) {
 			printf("Writing image file\n");
-			write_to_file(data, rows, cols, args[0]);
+			write_to_file(data, rows, cols, args[arg_count]);
 		} else {
 			printf("Printing mandelbrot\n");
 			print_mandelbrot(data, rows, cols);
