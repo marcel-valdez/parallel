@@ -137,6 +137,13 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 		#endif
 	}
 	
+	MPI_Send(
+		my_rows,
+		rows_slice * cols,
+		MPI_INT,
+		0,
+		1,
+		MPI_COMM_WORLD);
 }
 
 #endif /* MANDELBROT_H */
