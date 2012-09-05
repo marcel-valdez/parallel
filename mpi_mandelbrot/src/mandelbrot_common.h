@@ -25,7 +25,7 @@ void init_array(int *array[], int rows, int cols)
 		for(j = 0; j < cols; j++)
 		{
 			int* cell_pointer = row_address + (j * INT_SIZE);
-			*cell_pointer = (i * 10) + j;
+			*cell_pointer = 0;
 
 			int new_value = *cell_pointer;
 #ifdef DEBUG

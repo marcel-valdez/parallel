@@ -123,9 +123,9 @@ START_TEST (test_init_array)
 		for(j = 0; j < cols; j++)
 		{
 			fail_unless(
-				array[i][j] == ((i * 10) + j),
+				array[i][j] == 0,
 				"@[%d, %d] expected: %d, found: %d",
-				i, j, ((i * 10) + j), array[i][j]);
+				i, j, 0, array[i][j]);
 		}
 	}
 	
@@ -164,36 +164,23 @@ START_TEST (test_master)
 	const int cols = 4;
 	int arg_count = 0;
 	int proc_count = 2;
-	int expected_rows = rows / proc_count;
+	int rows_per_proc = rows / proc_count;
 	char* args[] = { };
 	start(arg_count, args, rows, cols);
 	int result[rows][cols];
+	long unsigned int result_addr = result;
+	long unsigned int expected_addr = result_addr + (rows_per_proc * cols * INT_SIZE * (proc_count - 2));
 	
 	// Act
 	mandelbrot_master(result, rows, cols, proc_count);
 
 	// Assert
-	int i = 0;
-	int j = 0;
 
-	long unsigned int buf_addr = test_buf;
-	printf("buf_addr: %lui\n", buf_addr);
-	for(; i < expected_rows; i++) {
-		long unsigned int row_addr = buf_addr + (i * cols * INT_SIZE);
-		for(j = 0; j < cols; j++) {
-			long unsigned int address = row_addr + (j * INT_SIZE);
-			int* pointer = address;
-			int value = *pointer;
-			printf("@[%d,%d]:%d ", i, j, value);
-			printf("addr:%lu\n", address);
-			int expected = ((i + expected_rows) * 10) + j;
-			int copy = value;
-			
-		        fail_unless(expected == copy, "Expected %d but found %d", expected, copy);
-		}
-	}
-	
-	fail_unless(test_count == expected_rows * cols, "Expected %d size but found %d", expected_rows * cols, test_count);
+	long unsigned int buf_addr = test_recv_buf;
+	fail_unless(buf_addr == expected_addr,
+			"Expected to receive %ul but got %ul", expected_addr, buf_addr);
+	fail_unless(test_recv_count == rows_per_proc * cols, 
+			"Expected %d size but found %d", rows_per_proc * cols, test_recv_count);
 	
 	printf("\n********* END *********\n");
 }
@@ -206,8 +193,8 @@ START_TEST (test_slave)
 	printf("******************************\n");
 	
 	/* Arrange */
-	const int cols = 640;
-	const int total_rows = 480;
+	const int cols = 640 * 3 / 2;
+	const int total_rows = 480 * 3 / 2;
 	int data[total_rows][cols];
 	zero_out(data, total_rows, cols);
 	int total_procs = 5;
