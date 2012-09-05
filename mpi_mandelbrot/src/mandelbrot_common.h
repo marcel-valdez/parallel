@@ -43,13 +43,13 @@ void init_array(int *array[], int rows, int cols)
 
 void start(int arg_count, char * args[], int rows, int cols)
 {
-	// Inicializar MP
+	/* Inicializar MP */
 	printf("Initialize MPI\n");
 	MPI_Init(&arg_count, &args);
-        // Get number of processes
+        /* Get number of processes */
 	printf("Get number of processes\n");
 	MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
-        // Get my process index
+        /* Get my process index */
 	printf("Get my process index\n");
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_proc_index);       
 }

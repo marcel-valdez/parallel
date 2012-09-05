@@ -29,11 +29,9 @@ void mandelbrot_master(int** result, int rows, int cols, int proc_count)
 	/* Inicializar datos */
 	init_array(result, rows, cols);	
 
-	printf("Master is sending data.\n");
 	/* Enviar renglones a cada proceso */
 	long unsigned int result_addr = result;
 	
-	printf("Master sent all data.\n");	
 	/* Wait for slaves to give data! */
 	for(i = 1; i < proc_count; i++) {
 		MPI_Status* status;
