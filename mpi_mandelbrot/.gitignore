@@ -30,3 +30,4 @@ tests/.deps/
 compile
 *_
 *.*~
+tests/check_mandelbrot
