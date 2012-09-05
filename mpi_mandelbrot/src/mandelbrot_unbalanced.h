@@ -3,14 +3,10 @@
 
 #define SQR(X) ((X) * (X))
 #define MAX_ITERATIONS 8096
-#define BLACK 0x00000000
-#define WHITE 0xFFFFFFFF
-#define COMPONENT(X) ( 0xFF - (0xFF * (X / MAX_ITERATIONS)))
-#define COLORIFY(X) ( ALPHA(X) | RED(X) | GREEN(X) | BLUE(X) )
-#define ALPHA(X) (( 0x00 << 24 ))
-#define RED(X) (( COMPONENT(X) << 16 ))
-#define GREEN(X) (( COMPONENT(X) << 8 ))
-#define BLUE(X) (( COMPONENT(X) ))
+#define BLACK 0x000000
+#define WHITE 0xFFFFFF
+#define COLORIFY(X) ( WHITE - (WHITE * X / MAX_ITERATIONS) )
+
 
 #ifndef INT_SIZE_SET
 #define INT_SIZE_SET
