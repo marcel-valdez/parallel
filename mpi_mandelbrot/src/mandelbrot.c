@@ -14,7 +14,7 @@ int main(int arg_count, char * args[])
 {
 	int rows = atoi(args[arg_count - 3]);
 	int cols = atoi(args[arg_count - 2]);
-	char* filename = args[arg_count - 1];
+	/*char* filename = args[arg_count - 1];*/
 	int data[rows][cols];
 	
 	arg_count = arg_count - 3;
@@ -34,8 +34,8 @@ int main(int arg_count, char * args[])
 	if (my_proc_index == 0)
 	{
 		if (rows > 100 || cols > 100) {
-			printf("Writing image file: %s\n", filename);
-			write_to_file(data, rows, cols, &filename);
+			printf("Writing image file: mandelbrot.bmp\n");
+			write_to_file(data, rows, cols, "mandelbrot.bmp");
 		} else {
 			printf("Printing mandelbrot\n");
 			print_mandelbrot(data, rows, cols);
