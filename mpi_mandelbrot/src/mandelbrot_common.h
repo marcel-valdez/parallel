@@ -45,13 +45,13 @@ void start(int arg_count, char * args[], int rows, int cols)
 {
 	// Inicializar MP
 	printf("Initialize MPI\n");
-        MPI_Init(&arg_count, &args);
+	MPI_Init(&arg_count, &args);
         // Get number of processes
 	printf("Get number of processes\n");
-        MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
+	MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
         // Get my process index
 	printf("Get my process index\n");
-        MPI_Comm_rank(MPI_COMM_WORLD, &my_proc_index);       
+	MPI_Comm_rank(MPI_COMM_WORLD, &my_proc_index);       
 }
 
 void end()

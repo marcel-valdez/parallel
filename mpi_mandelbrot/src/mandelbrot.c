@@ -16,16 +16,18 @@ int main(int arg_count, char * args[])
 	int cols = atoi(args[arg_count - 2]);
 	char* filename = args[arg_count - 1];
 	int data[rows][cols];
+	
 	arg_count = arg_count - 3;
 	start(arg_count, args, rows, cols);
-        if (my_proc_index == 0)
-        {
-                mandelbrot_master(data, rows, cols, num_procs);
-        }
-        else
-        {
-                mandelbrot_slave(data, rows, cols, my_proc_index, num_procs);
-        }
+	
+	if (my_proc_index == 0)
+	{
+		mandelbrot_master(data, rows, cols, num_procs);
+	}
+	else
+	{
+		mandelbrot_slave(data, rows, cols, my_proc_index, num_procs);
+	}
 
 	end();
 	
@@ -35,7 +37,7 @@ int main(int arg_count, char * args[])
 			printf("Writing image file: %s\n", filename);
 			write_to_file(data, rows, cols, filename);
 			printf("Printing part of the mandelbrot:\n");
-			print_mandelbrot(data, 40, 80);
+			//print_mandelbrot(data, 40, 80);
 		} else {
 			printf("Printing mandelbrot\n");
 			print_mandelbrot(data, rows, cols);

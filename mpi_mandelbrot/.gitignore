@@ -28,3 +28,5 @@ install-sh
 config.status
 tests/.deps/
 compile
+*_
+*.*~

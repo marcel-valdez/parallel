@@ -31,17 +31,17 @@ void mandelbrot_master(int **result, int rows, int cols, int proc_count)
 	printf("Master is sending data.\n");
 	// Enviar renglones a cada proceso
 	long unsigned int result_addr = result;
-	for(i = 1; i < proc_count; i++, row += rows_slice)
-	{
+	//for(i = 1; i < proc_count; i++, row += rows_slice)
+	//{
 		// send ( data, to_process)
-		int current_rows_slice = i == proc_count - 1 ? rows_slice + remainder : rows_slice;		
-		long unsigned int rows_to_send_addr = result_addr + (row * cols * INT_SIZE);
+		//int current_rows_slice = i == proc_count - 1 ? rows_slice + remainder : rows_slice;		
+		//long unsigned int rows_to_send_addr = result_addr + (row * cols * INT_SIZE);
 		
 		// Variable para renglones a enviar
-		int** rows_to_send = rows_to_send_addr;
-		printf("Master is sending data to Slave %d\n", i);
-		MPI_Send(rows_to_send, current_rows_slice * cols, MPI_INT, i, 1, MPI_COMM_WORLD);
-	}
+		//int** rows_to_send = rows_to_send_addr;
+		// printf("Master is sending data to Slave %d\n", i);
+		// MPI_Send(rows_to_send_addr, current_rows_slice * cols, MPI_INT, i, 1, MPI_COMM_WORLD);
+	//}
 	
 	printf("Master sent all data.\n");	
 	/* Wait for slaves to give data! */
@@ -52,7 +52,7 @@ void mandelbrot_master(int **result, int rows, int cols, int proc_count)
 		int current_rows_slice = i == proc_count - 1 ? rows_slice + remainder : rows_slice;
 		printf("Master is waiting on Slave %d\n", i);
 		MPI_Recv(
-			rows_to_receive,  /* where to store rows */
+			rows_to_receive_addr,  /* where to store rows */
 			current_rows_slice * cols, /* amount of data to receive */
 			MPI_INT, /* type of data to receive */
 			i, /* Receive specifically from ith process  */
@@ -87,8 +87,8 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 	MPI_Status* status;
 	
 	/* Wait for rows from master */
-	printf("Slave: %d is waiting for data from master\n", my_proc_idx);
-	MPI_Recv(my_rows, rows_slice * cols, MPI_INT, 0, 1, MPI_COMM_WORLD, &status);
+	//printf("Slave: %d is waiting for data from master\n", my_proc_idx);
+	//MPI_Recv(my_rows, rows_slice * cols, MPI_INT, 0, 1, MPI_COMM_WORLD, &status);
 	
 	printf("Slave %d woke up and is about to calculate\n", my_proc_idx);
 	/* Calculate mandelbrot! */
@@ -142,9 +142,9 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 	}
 	
 	printf("Slave %d is sending data back to the server\n", my_proc_idx);
-	print_mandelbrot(my_rows, rows_slice, cols);
+	write_to_file(my_rows, rows_slice, cols, "mandelbrot_" + my_proc_idx);
 	MPI_Send(
-		my_rows,
+		rows_addr,
 		rows_slice * cols,
 		MPI_INT,
 		0,
