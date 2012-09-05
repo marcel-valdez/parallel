@@ -36,11 +36,10 @@ void mandelbrot_master(int** result, int rows, int cols, int proc_count)
 	for(i = 1; i < proc_count; i++) {
 		MPI_Status* status;
 		long unsigned int rows_to_receive_addr = result_addr + (rows_slice * cols * INT_SIZE * (i - 1));
-		int** rows_to_receive = rows_to_receive_addr;
 		int current_rows_slice = i == proc_count - 1 ? rows_slice + remainder : rows_slice;
 		printf("Master is waiting on Slave %d\n", i);
 		MPI_Recv(
-			&rows_to_receive,  /* where to store rows */
+			rows_to_receive_addr,  /* where to store rows */
 			current_rows_slice * cols, /* amount of data to receive */
 			MPI_INT, /* type of data to receive */
 			i, /* Receive specifically from ith process  */
