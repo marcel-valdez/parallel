@@ -14,10 +14,9 @@ int main(int arg_count, char * args[])
 {
 	int rows = atoi(args[arg_count - 3]);
 	int cols = atoi(args[arg_count - 2]);
-	/*char* filename = args[arg_count - 1];*/
 	int data[rows][cols];
 	char const * filename = "/mirror/mandelbrot.bmp";
-	arg_count = arg_count - 3;
+	arg_count = arg_count - 2;
 	start(arg_count, args, rows, cols);
 	
 	if (my_proc_index == 0)

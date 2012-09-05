@@ -5,7 +5,7 @@
 #define MAX_ITERATIONS 8096
 #define BLACK 0x000000
 #define WHITE 0xFFFFFF
-#define LIGHTER(X) ((X * (WHITE / MAX_ITERATIONS)))
+#define COLRIFY(X) ((X * (WHITE / MAX_ITERATIONS)))
 
 #ifndef INT_SIZE_SET
 #define INT_SIZE_SET
@@ -116,7 +116,7 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 			int * pixel = pixel_address;
 			
 			/* If pixel is inside mandelbrot, then set it black, white otherwise. */
-			*pixel = is_inside ? BLACK : LIGHTER (iterate);
+			*pixel = COLRIFY (iterate);
 		}
 		#ifdef DEBUG_HIGH
 		printf("}");
