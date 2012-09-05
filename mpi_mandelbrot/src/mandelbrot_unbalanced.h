@@ -3,9 +3,9 @@
 
 #define SQR(X) ((X) * (X))
 #define MAX_ITERATIONS 8096
-#define BLACK 0x000000
-#define WHITE 0xFFFFFF
-#define COLRIFY(X) ((X * (WHITE / MAX_ITERATIONS)))
+#define BLACK 0x00000000
+#define WHITE 0xFFFFFFFF
+#define COLORIFY(X) ( WHITE - (WHITE * (X / MAX_ITERATIONS) ) )
 
 #ifndef INT_SIZE_SET
 #define INT_SIZE_SET
@@ -116,7 +116,7 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 			int * pixel = pixel_address;
 			
 			/* If pixel is inside mandelbrot, then set it black, white otherwise. */
-			*pixel = COLRIFY (iterate);
+			*pixel = COLORIFY (iterate);
 		}
 		#ifdef DEBUG_HIGH
 		printf("}");
