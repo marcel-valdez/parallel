@@ -193,8 +193,8 @@ START_TEST (test_slave)
 	printf("******************************\n");
 	
 	/* Arrange */
-	const int cols = 640 * 3 / 2;
-	const int total_rows = 480 * 3 / 2;
+	const int cols = 480;
+	const int total_rows = 640;
 	int data[total_rows][cols];
 	zero_out(data, total_rows, cols);
 	int total_procs = 5;
