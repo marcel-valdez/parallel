@@ -198,23 +198,25 @@ START_TEST (test_slave)
 	int data[total_rows][cols];
 	zero_out(data, total_rows, cols);
 	int total_procs = 5;
+	int worker_procs = 4;
 	respond_buf_addr = data;
+	unsigned long int data_addr = data;
 	
 	/* Act */
 	int i = 1;
 	for (i = 1; i < total_procs; i++) {
 		/* Se construye el mandelbrot por partes */
 		int proc_idx = i;
-		mandelbrot_slave(data, total_rows, cols, proc_idx, total_procs);
+		int rows_per_proc = (total_rows / worker_procs);
+		rows_per_proc += (i == worker_procs) ? (total_rows % worker_procs) : 0;
+		unsigned long int current_data_addr = data_addr + ((i - 1) * cols * rows_per_proc * INT_SIZE);
+		mandelbrot_slave(current_data_addr, total_rows, cols, proc_idx, total_procs);
 	}
 	
 	/* Assert */
-	/*
-	print_mandelbrot(data, total_rows, cols);
-	printf("Is it a %d x %d mandelbrot?", total_rows, cols);
-	*/
 	if (cols > 100 || total_rows > 100) {
 		printf("Test data is too big, writing to file mandelbrot.bmp\n");
+		process_mandelbrot(&data, total_rows, cols);
 		write_to_file(&data, total_rows, cols, "mandelbrot.bmp");
 	} else {
 		print_mandelbrot(data, total_rows, cols);

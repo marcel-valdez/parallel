@@ -3,10 +3,9 @@
 
 #define SQR(X) ((X) * (X))
 #define MAX_ITERATIONS 8096
-#define BLACK 0x000000
-#define WHITE 0xFFFFFF
-#define COLORIFY(X) ( WHITE - (WHITE * X / MAX_ITERATIONS) )
-
+#define WHITE 8096
+#define BLACK 0x0
+#define COLORIFY(X) ( WHITE * X / MAX_ITERATIONS )
 
 #ifndef INT_SIZE_SET
 #define INT_SIZE_SET
@@ -18,6 +17,11 @@ const int INT_SIZE = sizeof(int);
 	#define true 1
 	#define false 0
 #endif
+
+address move_to_row(address row_addr, int row, int col_size)
+{
+	return move_pointer(row_addr, row * col_size);
+}
 
 void mandelbrot_master(int** result, int rows, int cols, int proc_count)
 {
@@ -31,12 +35,12 @@ void mandelbrot_master(int** result, int rows, int cols, int proc_count)
 	init_array(result, rows, cols);	
 
 	/* Enviar renglones a cada proceso */
-	long unsigned int result_addr = result;
+	address result_addr = result;
 	
 	/* Wait for slaves to give data! */
 	for(i = 1; i < proc_count; i++) {
 		MPI_Status* status;
-		long unsigned int rows_to_receive_addr = result_addr + (rows_slice * cols * INT_SIZE * (i - 1));
+		address rows_to_receive_addr = move_pointer(result_addr, rows_slice * cols *  (i - 1));
 		int current_rows_slice = i == proc_count - 1 ? rows_slice + remainder : rows_slice;
 		printf("Master is waiting on Slave %d\n", i);
 		MPI_Recv(
@@ -47,9 +51,9 @@ void mandelbrot_master(int** result, int rows, int cols, int proc_count)
 			1, /* dumb value */
 			MPI_COMM_WORLD, /* WORLD! */
 			&status); /* Won't actually be used */
-	}
-	
+	}	
 }
+
 
 void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, int total_procs)
 {
@@ -60,26 +64,27 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 	double max_imaginary = min_imaginary + (max_real - min_real) * total_rows / cols;
 	double real_factor = (max_real - min_real) / (cols - 1);
 	double imaginary_factor = (max_imaginary - min_imaginary) / (total_rows - 1);
+	int total_workers = total_procs - 1;
 	
 	/* Calculate and send result back! */
-	int rows_per_proc = total_rows / total_procs;
+	int rows_per_proc = total_rows / total_workers;
 	
 	/* If this process is the last to receive rows, then it expects all the remainder of rows */
-	int rows_slice = rows_per_proc + (my_proc_idx == (total_procs - 1) ? total_rows % total_procs : 0);
-	#ifdef  DEBUG
+	int rows_slice = rows_per_proc + (my_proc_idx == total_workers ? total_rows % total_workers : 0);
+	#ifdef DEBUG
 	printf("My rows_slice: %d\n", rows_slice);
 	#endif
 	MPI_Status* status;
 	
 	/* Calculate mandelbrot! */
-	long unsigned int rows_addr = my_rows;
+	address rows_addr = my_rows;
 	int row = 0;
 	for(row = 0; row < rows_slice; row++)
 	{
-		long unsigned int row_addr = rows_addr + (row * cols * INT_SIZE);
+		address row_addr = move_pointer(rows_addr, row * cols);
 		
 		/* 1 >= my_proc_idx < total_procs. No slave is process 0.  */
-		int y = row + ((my_proc_idx - 1) * rows_per_proc);
+		int y = ((my_proc_idx - 1) * rows_per_proc) + row;
 		#ifdef DEBUG_HIGH
 		printf("\nrow: %d\n", y);
 		#endif
@@ -98,7 +103,7 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 			int iterate = 0;
 			double z_real = c_real;
 			double z_imaginary = c_imaginary;
-			for(iterate = 0; iterate < MAX_ITERATIONS; ++iterate)
+			for(iterate = 0; iterate < MAX_ITERATIONS; iterate++)
 			{
 				double z_real2 = SQR(z_real);
 				double z_imaginary2 = SQR(z_imaginary);
@@ -113,17 +118,16 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 			}
 			
 			/* Get the pixel to draw */
-			long unsigned int pixel_address = row_addr + (col * INT_SIZE);
+			address pixel_address = move_pointer(row_addr, col);
 			int * pixel = pixel_address;
 			
-			/* If pixel is inside mandelbrot, then set it black, white otherwise. */
-			*pixel = is_inside ? BLACK : COLORIFY (iterate);
+			/* If pixel is inside mandelbrot, then set it white, colirfy otherwise. */
+			*pixel = is_inside ? WHITE : COLORIFY(iterate);
 		}
 		#ifdef DEBUG_HIGH
 		printf("}");
 		#endif
 	}
-	
 	
 	printf("Slave %d is sending data back to the server\n", my_proc_idx);
 	MPI_Send(
@@ -135,6 +139,55 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 		MPI_COMM_WORLD);
 	
 	printf("Slave %d is dying now.\n", my_proc_idx);
+}
+
+
+address top_pixel(address pixel_addr, int col_size)
+{
+	return pixel_addr - (col_size * INT_SIZE);
+}
+
+address left_pixel(address pixel_addr)
+{
+	return pixel_addr - INT_SIZE;
+}
+
+address right_pixel(address pixel_addr)
+{
+	return pixel_addr + INT_SIZE;
+}
+
+address bot_pixel(address pixel_addr, int col_size)
+{
+	return pixel_addr + (col_size * INT_SIZE);
+}
+
+void process_mandelbrot(int** data, int rows, int cols)
+{
+	address data_addr = data;
+	int pass;
+	for(pass = 0; pass < 256; pass++)
+	{
+		int row;
+		for(row = 1; row < rows - 2; row++)
+		{
+			address row_addr = move_to_row(data_addr, row, cols);
+			int col;
+			for(col = 1; col < col - 2; col++)
+			{
+				address pixel_addr = move_pointer(row_addr, col);
+				int* pixel = pixel_addr;
+				if(*pixel == COLORIFY(pass)) 
+				{			
+					int* top = top_pixel(pixel_addr, cols);
+					int* left = left_pixel(pixel_addr);
+					int* right = right_pixel(pixel_addr);
+					int* bot = bot_pixel(pixel_addr, cols);
+					*pixel = (*top + *left + *right + *bot) >> 2;								
+				}
+			}
+		}
+	}	
 }
 
 #endif /* MANDELBROT_H */
