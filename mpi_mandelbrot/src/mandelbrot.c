@@ -12,8 +12,8 @@
 
 int main(int arg_count, char * args[])
 {
-	int rows = atoi(args[arg_count - 3]);
-	int cols = atoi(args[arg_count - 2]);
+	int rows = atoi(args[arg_count - 2]);
+	int cols = atoi(args[arg_count - 1]);
 	int data[rows][cols];
 	char const * filename = "/mirror/mandelbrot.bmp";
 	arg_count = arg_count - 2;

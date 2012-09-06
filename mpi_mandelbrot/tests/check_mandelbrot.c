@@ -221,7 +221,7 @@ START_TEST (test_slave)
 	
 	if (cols > 100 || total_rows > 100) {
 		printf("Test data is too big, writing to file mandelbrot.bmp\n");
-		process_mandelbrot(&data, total_rows, cols);
+		process_mandelbrot(data_addr, total_rows, cols);
 		write_to_file(&data, total_rows, cols, "mandelbrot.bmp");
 	} else {
 		print_mandelbrot(data, total_rows, cols);

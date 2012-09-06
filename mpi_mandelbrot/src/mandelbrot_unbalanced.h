@@ -3,10 +3,14 @@
 
 #define SQR(X) ((X) * (X))
 #define MAX_ITERATIONS 8096
-#define WHITE 8096
-#define BLACK 0x0
+#define WHITE 0xFFFFFF
+#define BLACK 0x000000
+#define INNER_COLOR BLACK
 #define COLORIFY(X) ( WHITE * X / MAX_ITERATIONS )
-
+#define COMPONENT(X) ((0xFF * (X / MAX_ITERATIONS)))
+#define RED(X) ( COMPONENT(X) << 16)
+#define GREEN(X) (COMPONENT(X) << 8)
+#define BLUE(X) (COMPONENT(X))
 #ifndef INT_SIZE_SET
 #define INT_SIZE_SET
 const int INT_SIZE = sizeof(int);
@@ -122,7 +126,7 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 			int * pixel = pixel_address;
 			
 			/* If pixel is inside mandelbrot, then set it white, colirfy otherwise. */
-			*pixel = is_inside ? WHITE : COLORIFY(iterate);
+			*pixel = is_inside ? INNER_COLOR : COLORIFY(iterate);
 		}
 		#ifdef DEBUG_HIGH
 		printf("}");
@@ -166,7 +170,7 @@ void process_mandelbrot(int** data, int rows, int cols)
 {
 	address data_addr = data;
 	int pass;
-	for(pass = 0; pass < 256; pass++)
+	for(pass = 0; pass < MAX_ITERATIONS; pass++)
 	{
 		int row;
 		for(row = 1; row < rows - 2; row++)
@@ -177,13 +181,17 @@ void process_mandelbrot(int** data, int rows, int cols)
 			{
 				address pixel_addr = move_pointer(row_addr, col);
 				int* pixel = pixel_addr;
-				if(*pixel == COLORIFY(pass)) 
+				//if(*pixel == COLORIFY(pass)) 
 				{			
 					int* top = top_pixel(pixel_addr, cols);
 					int* left = left_pixel(pixel_addr);
 					int* right = right_pixel(pixel_addr);
 					int* bot = bot_pixel(pixel_addr, cols);
-					*pixel = (*top + *left + *right + *bot) >> 2;								
+					int new_pixel = (*top + *left + *right + *bot) >> 2;
+					if (new_pixel > *pixel)
+					{
+						*pixel = new_pixel;
+					}
 				}
 			}
 		}
