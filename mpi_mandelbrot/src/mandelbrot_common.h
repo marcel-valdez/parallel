@@ -83,5 +83,5 @@ void print_mandelbrot(int** data, int rows, int cols)
 
 void write_to_file(int** data, int rows, int cols, char const* filename)
 {
-	stbi_write_bmp(filename, cols, rows, 1, data);
+	stbi_write_bmp(filename, cols, rows, 1, &data);
 }

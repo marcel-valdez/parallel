@@ -117,7 +117,7 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 			int * pixel = pixel_address;
 			
 			/* If pixel is inside mandelbrot, then set it black, white otherwise. */
-			*pixel = COLORIFY (iterate);
+			*pixel = is_inside ? BLACK : COLORIFY (iterate);
 		}
 		#ifdef DEBUG_HIGH
 		printf("}");
