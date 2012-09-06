@@ -28,8 +28,6 @@ void mandelbrot_master(int** result, int rows, int cols, int proc_count)
 	int worker_count = proc_count - 1;
 	int rows_slice = rows / worker_count;
 	int remainder = rows % worker_count;
-	int resolution = rows * cols;
-	int i = 0, j = 0, k = 0, row = 0;
 	
 	printf("Master prepares data.\n");
 	/* Inicializar datos */
@@ -38,11 +36,12 @@ void mandelbrot_master(int** result, int rows, int cols, int proc_count)
 	/* Enviar renglones a cada proceso */
 	address result_addr = result;
 	
+	int i;
 	/* Wait for slaves to give data! */
 	for(i = 1; i <= worker_count; i++) {
 		MPI_Status* status;
 		address rows_to_receive_addr = move_pointer(result_addr, rows_slice * cols *  (i - 1));
-		int current_rows_slice = i == worker_count ? rows_slice + remainder : rows_slice;
+		int current_rows_slice = (i == worker_count) ? rows_slice + remainder : rows_slice;
 		printf("Master is waiting on Slave %d\n", i);
 		MPI_Recv(
 			rows_to_receive_addr,  /* where to store rows */
@@ -71,7 +70,7 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 	int rows_per_proc = total_rows / total_workers;
 	
 	/* If this process is the last to receive rows, then it expects all the remainder of rows */
-	int rows_slice = rows_per_proc + (my_proc_idx == total_workers ? total_rows % total_workers : 0);
+	int rows_slice = rows_per_proc + (my_proc_idx == total_workers) ? total_rows % total_workers : 0;
 	#ifdef DEBUG
 	printf("My rows_slice: %d\n", rows_slice);
 	#endif
