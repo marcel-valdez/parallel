@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <mpi.h>
 
+#include "mandelbrot_common.h"
+
 #ifdef BALANCED 
 	#include "mandelbrot_balanced.h"
 #else
 	#include "mandelbrot_unbalanced.h"
 #endif
-
-#include "mandelbrot_common.h"
 
 int main(int arg_count, char * args[])
 {

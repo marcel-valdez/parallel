@@ -18,10 +18,10 @@ const int INT_SIZE = sizeof(int);
 	#define false 0
 #endif
 
-address move_to_row(address row_addr, int row, int col_size)
-{
-	return move_pointer(row_addr, row * col_size);
-}
+#ifndef ADDRESS_SET
+#define ADDRESS_SET
+typedef unsigned long int address;
+#endif
 
 void mandelbrot_master(int** result, int rows, int cols, int proc_count)
 {
@@ -70,7 +70,7 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 	int rows_per_proc = total_rows / total_workers;
 	
 	/* If this process is the last to receive rows, then it expects all the remainder of rows */
-	int rows_slice = rows_per_proc + (my_proc_idx == total_workers) ? total_rows % total_workers : 0;
+	int rows_slice = rows_per_proc + ((my_proc_idx == total_workers) ? total_rows % total_workers : 0);
 	#ifdef DEBUG
 	printf("My rows_slice: %d\n", rows_slice);
 	#endif

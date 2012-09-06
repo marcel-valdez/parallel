@@ -207,13 +207,18 @@ START_TEST (test_slave)
 	for (i = 1; i < total_procs; i++) {
 		/* Se construye el mandelbrot por partes */
 		int proc_idx = i;
-		int rows_per_proc = (total_rows / worker_procs);
+		int rows_per_proc = total_rows / worker_procs;
 		rows_per_proc += (i == worker_procs) ? (total_rows % worker_procs) : 0;
 		unsigned long int current_data_addr = data_addr + ((i - 1) * cols * rows_per_proc * INT_SIZE);
 		mandelbrot_slave(current_data_addr, total_rows, cols, proc_idx, total_procs);
+		
+	/* Assert */
+		int expected_size = rows_per_proc * cols;
+		fail_unless(test_count == expected_size,
+		 		"Bad size received from slave. Expected %d but found %d",
+				expected_size, test_count);
 	}
 	
-	/* Assert */
 	if (cols > 100 || total_rows > 100) {
 		printf("Test data is too big, writing to file mandelbrot.bmp\n");
 		process_mandelbrot(&data, total_rows, cols);
@@ -222,6 +227,7 @@ START_TEST (test_slave)
 		print_mandelbrot(data, total_rows, cols);
 	}
 	printf("Is it a %d x %d mandelbrot?", total_rows, cols);
+	
 	/* Reset */ 	
 	respond_buf_addr = -1;
 	printf("\n********* END *********\n");

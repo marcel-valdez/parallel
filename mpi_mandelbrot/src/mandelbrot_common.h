@@ -8,13 +8,23 @@ const int INT_SIZE = sizeof(int);
 #endif
 int my_proc_index = -1;
 int num_procs = -1;
+
+#ifndef ADDRESS_SET
+#define ADDRESS_SET
 typedef unsigned long int address;
+#endif
 
 address move_pointer(address addr, int positions)
 {
 	address result = addr + (positions * INT_SIZE);
 	
 	return result;
+}
+
+
+address move_to_row(address row_addr, int row, int col_size)
+{
+	return move_pointer(row_addr, row * col_size);
 }
 
 void init_array(int *array[], int rows, int cols)
