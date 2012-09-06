@@ -164,7 +164,7 @@ START_TEST (test_master)
 	const int cols = 4;
 	int arg_count = 0;
 	int proc_count = 2;
-	int rows_per_proc = rows / proc_count;
+	int rows_per_proc = rows / (proc_count - 1);
 	char* args[] = { };
 	start(arg_count, args, rows, cols);
 	int result[rows][cols];

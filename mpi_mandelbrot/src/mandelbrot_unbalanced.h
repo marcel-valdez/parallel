@@ -25,8 +25,9 @@ address move_to_row(address row_addr, int row, int col_size)
 
 void mandelbrot_master(int** result, int rows, int cols, int proc_count)
 {
-	int rows_slice = rows / proc_count;
-	int remainder = rows % proc_count;
+	int worker_count = proc_count - 1;
+	int rows_slice = rows / worker_count;
+	int remainder = rows % worker_count;
 	int resolution = rows * cols;
 	int i = 0, j = 0, k = 0, row = 0;
 	
@@ -38,10 +39,10 @@ void mandelbrot_master(int** result, int rows, int cols, int proc_count)
 	address result_addr = result;
 	
 	/* Wait for slaves to give data! */
-	for(i = 1; i < proc_count; i++) {
+	for(i = 1; i <= worker_count; i++) {
 		MPI_Status* status;
 		address rows_to_receive_addr = move_pointer(result_addr, rows_slice * cols *  (i - 1));
-		int current_rows_slice = i == proc_count - 1 ? rows_slice + remainder : rows_slice;
+		int current_rows_slice = i == worker_count ? rows_slice + remainder : rows_slice;
 		printf("Master is waiting on Slave %d\n", i);
 		MPI_Recv(
 			rows_to_receive_addr,  /* where to store rows */
