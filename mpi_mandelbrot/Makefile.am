@@ -1,13 +1,19 @@
 SUBDIRS = src . tests
 
-all: test run
+all: build test
 
 test_unbalanced: test
 
 run_unbalanced: run
 
+build:
+	cd src;\
+	make compile;\
+	make clean;\
+	cd ..;
+
 test: check
 
 run:
 	cd bin;\
-	mpiexec.mpich2 -machinefile /mirror/machines -np 5 $(PWD)/bin/mandelbrot 640 480 mandelbrot.bmp
+	mpiexec.mpich2 -machinefile /mirror/machines -np 5 $(PWD)/bin/mandelbrot 640 480
