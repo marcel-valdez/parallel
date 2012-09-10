@@ -15,7 +15,7 @@ void mandelbrot_master(int** result, int rows, int cols, int proc_count)
 	int rows_slice = rows / worker_count;
 	int remainder = rows % worker_count;
 	
-	printf("Master prepares data.\n");
+	printf("*************************\n* Master prepares data. *\n*************************\n");
 	/* Inicializar datos */
 	init_array(result, rows, cols);	
 
@@ -38,7 +38,9 @@ void mandelbrot_master(int** result, int rows, int cols, int proc_count)
 		/*	1, /* dumb value */
 		/*	MPI_COMM_WORLD, /* WORLD! */
 		/*	&status); /* Won't actually be used */
-	}		
+	}
+	
+	printf("*******************\n* Master is done. *\n*******************\n");
 }
 
 
