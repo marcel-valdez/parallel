@@ -1,78 +1,87 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct
-{
-	int MP_SOURCE;
-	int MPI_TAG;
-	int MPI_ERROR;
-	int size;
-	int reserved[2];
-} MPI_Status;
+#define MPI_LAYER_H
+
+// Initialization stuff
+#ifndef INT_SIZE_SET
+#define INT_SIZE_SET
+const int INT_SIZE = sizeof(int);
+#endif
+
+#ifndef ADDRESS_SET
+#define ADDRESS_SET
+typedef unsigned long int address;
+#endif
+
+const int DEFAULT_TAG = 0xFFFF;
+int my_proc_index = 1;
+int num_procs = 1;
 
 int MPI_COMM_WORLD = 1;
 int MPI_INT = 4;
 int** test_buf;
-int test_count = -1, test_data_type = -1, test_source = -1, test_tag = -1, test_comm = -1;
+int test_count = -1, test_data_type = -1, test_source = -1, test_tag = -1, test_size = -1, test_rank = -1;
 
 int** test_recv_buf;
-int test_recv_count = -1, test_recv_data_type = -1, test_recv_source = -1, test_recv_tag = -1, test_recv_comm = -1;
-MPI_Status *test_recv_status;
+int test_recv_count = -1, test_recv_source = -1, test_recv_tag = -1, test_dest = -1;
+
 unsigned long int respond_buf_addr = -1;
-void MPI_Recv(void *buf, int count, int data_type, int source, int tag, int comm, MPI_Status* status)
+
+int mpi_receive(address data_addr, int data_size, int source)
 {
-	test_recv_buf = (int **)buf;
-	test_recv_count = count;
-	test_recv_data_type = data_type;
+	test_recv_buf = data_addr;
+	test_recv_count = data_size;
 	test_recv_source = source;
-	test_recv_tag = tag;
-	test_recv_comm = comm;	
-	test_recv_status = status;
+	test_recv_tag = 1;
 	
 	if (respond_buf_addr != -1) {
-		unsigned long int recv_buf_addr = buf;
+		address recv_buf_addr = data_addr;
 		int i = 0;
-		for(i = 0; i < count; i++) {
-			unsigned long int respond_pixel_addr = respond_buf_addr + (i * sizeof(int));
+		for(i = 0; i < data_size; i++) {
+			address respond_pixel_addr = respond_buf_addr + (i * sizeof(int));
 			int* respond_pixel = respond_pixel_addr;
 			
-			unsigned long int recv_pixel_addr = buf + (i * sizeof(int));
+			address recv_pixel_addr = data_addr + (i * sizeof(int));
 			int* recv_pixel = recv_pixel_addr;
 			*recv_pixel = *respond_pixel;
 		}
 	}
 }
 
-int *test_args;
-char *** test_argv;
-void MPI_Init(int * args, char ***argv)
+void MPI_Send(address buf, int count, int dest, int tag)
 {
-	test_args = args;
-	test_args = argv;
-}
-
-int test_dest = -1;
-void MPI_Send(void * buf, int count, int data_type, int dest, int tag, int comm)
-{
-	test_buf = (int **)buf;
+	test_buf = buf;
 	test_count = count;
-	test_data_type = data_type;
 	test_dest = dest;
 	test_tag = tag;
-	test_comm = comm;	
 }
 
-int *test_size;
-void MPI_Comm_size(int comm, int * size)
+void mpi_send_master(address data_addr, int data_size, int tag)
 {
-	test_comm = comm;
-	test_size = size;
+	mpi_send(data_addr, data_size, 0, tag);
 }
 
-int *test_rank;
-void MPI_Comm_rank(int comm, int * rank)
+void mpi_send_default_master(address data_addr, int data_size)
 {
-	test_rank = rank;
+	mpi_send_default(data_addr, data_size, 0);
+}
+
+void mpi_send_default(address data_addr, int data_size, int dest_process)
+{
+	mpi_send(data_addr, data_size, dest_process);
+}
+
+void mpi_send(address data_addr, int data_size, int dest_process, int tag)
+{
+	test_count = data_size;
+	void MPI_Send(data_addr, data_size, MPI_INT, dest_process, tag);
+}
+
+void start(int arg_count, char * args[], int rows, int cols)
+{
+	my_proc_index = test_rank = 1;
+	num_procs = test_size = 1;
 }
 
 #include "../src/mandelbrot_common.h"
@@ -148,8 +157,8 @@ START_TEST (test_initialize)
 	start(arg_count, args, rows, cols);
 
 	// Assert
-	fail_unless(my_proc_index == *test_rank, "Rank variable not used correctly");
-	fail_unless(num_procs == *test_size, "Size variable not used correctly");
+	fail_unless(my_proc_index == test_rank, "Rank variable not used correctly");
+	fail_unless(num_procs == test_size, "Size variable not used correctly");
 	printf("\n********* END *********\n");
 }
 END_TEST

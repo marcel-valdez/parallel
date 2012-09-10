@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <mpi.h>
 
 #include "mandelbrot_common.h"
 
