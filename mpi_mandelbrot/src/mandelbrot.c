@@ -1,13 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#ifndef SERIAL
 #include "mpi_layer.h"
-#ifdef BALANCED 
-	#include "mandelbrot_balanced.h"
-	char const * filename = "mandelbrot_balanced.png";
+#endif
+#ifdef SERIAL
+	#include "mandelbrot_serial.h"
+	char const * filename = "mandelbrot_serial.png";
 #else
-	#include "mandelbrot_unbalanced.h"
-	char const * filename = "mandelbrot.png";
+	#ifdef BALANCED 
+		#include "mandelbrot_balanced.h"
+		char const * filename = "mandelbrot_balanced.png";
+	#else
+		#include "mandelbrot_unbalanced.h"
+		char const * filename = "mandelbrot.png";
+	#endif
 #endif
 
 
@@ -25,9 +32,12 @@ int main(int arg_count, char * args[])
 	int** data = malloc(rows * cols * INT_SIZE);
 	address data_addr = data;
 	arg_count = arg_count - 2;
-		
+	#ifndef SERIAL
 	start(arg_count, args, rows, cols);
-	
+	#else
+	int my_proc_index = 0;
+	int num_procs = 1;
+	#endif
 	if (my_proc_index == 0)
 	{
 		long int start_time = get_seconds_stamp();
@@ -39,11 +49,13 @@ int main(int arg_count, char * args[])
 	}
 	else
 	{
+		#ifndef SERIAL
 		mandelbrot_slave(data_addr, rows, cols, my_proc_index, num_procs);
+		#endif
 	}
-
+	#ifndef SERIAL
 	end();
-	
+	#endif
 	if (my_proc_index == 0)
 	{
 		if (rows > 100 || cols > 100) {

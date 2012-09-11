@@ -156,7 +156,9 @@ void mpi_send(address data_addr, int data_size, int dest_process, int tag)
 void start(int arg_count, char * args[], int rows, int cols)
 {
 	/* Inicializar MP */
+	#ifdef DEBUG
 	printf("Initialize MPI\n");
+	#endif
 	MPI_Init(&arg_count, &args);
         /* Get number of processes */
 	#ifdef DEBUG
@@ -176,7 +178,9 @@ void start(int arg_count, char * args[], int rows, int cols)
 */
 void end()
 {
+	#ifdef DEBUG
 	printf("\bProc: %d. Finalizing MPI...\n", my_proc_index);
+	#endif
 	MPI_Finalize();
 	if (status != NULL)
 	{
