@@ -108,7 +108,7 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 	}
 	
 	printf("Slave %d is sending data back to the server\n", my_proc_idx);
-	mpi_send_default_master(&my_rows, rows_slice * cols);	
+	mpi_send_default_master(rows_addr, rows_slice * cols);	
 	printf("Slave %d is dying now.\n", my_proc_idx);
 }
 
