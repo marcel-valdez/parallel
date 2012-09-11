@@ -91,9 +91,9 @@ void print_mandelbrot(address data_addr, int rows, int cols)
 	}
 }
 
-void write_to_file(int** data, int rows, int cols, char const* filename)
+void write_to_file(address data, int rows, int cols, char const* filename)
 {
-	stbi_write_png(filename, cols, rows, 3, &data, cols * INT_SIZE);
+	stbi_write_png(filename, cols, rows, 3, data, cols * INT_SIZE);
 }
 
 
