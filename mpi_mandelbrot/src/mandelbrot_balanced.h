@@ -12,13 +12,11 @@
 	#define DPRINT1(MSG, VAR) (printf(MSG, VAR))
 	#define DPRINT2(MSG, VAR1, VAR2) (printf(MSG, VAR1, VAR2))
 	#define DPRINT3(MSG, VAR1, VAR2, VAR3) (printf(MSG, VAR1, VAR2, VAR3))
-	#define DECLARE(X) (X)
 #else
-	#define DPRINT(X) ()
-	#define DPRINT1(MSG, VAR) ()
-	#define DPRINT2(MSG, VAR1, VAR2) ()
-	#define DPRINT3(MSG, VAR1, VAR2, VAR3) ()
-	#define DECLARE(X) ()
+	#define DPRINT(X) /* X */
+	#define DPRINT1(MSG, VAR) /* MSG, VAR */
+	#define DPRINT2(MSG, VAR1, VAR2)
+	#define DPRINT3(MSG, VAR1, VAR2, VAR3)
 #endif
 
 #include "mandelbrot_common.h"
@@ -71,7 +69,6 @@ void mandelbrot_master(address result, int height, int width, int proc_count)
 	/* Requiero que circule entre 1 - Max Slaves */
 	for (slave_idx = 1; row_idx < proc_count - 1; slave_idx = next_slave(slave_idx)) 
 	{    
-
 		DPRINT2("Sending row: %d to slave %d\n", row_idx, slave_idx);
 		/* supone que proc_count < disp_height */
 		/* envia el comando de calcular el renglon al siguiente esclavo */
@@ -159,7 +156,7 @@ void mandelbrot_slave(
 		address data_row_addr = set_row_index(row_addr, y);
 		for(col = 0; col < cols; col++)
 		{
-			/*DPRINT1("%d ", col);*/
+			/*DPRINT1("%d ", col)*/
 			double c_real = min_real + col * real_factor;
 			double z_real = c_real;
 			double z_imaginary = c_imaginary;
@@ -185,7 +182,7 @@ void mandelbrot_slave(
 	/* If pixel is inside mandelbrot, then set it INNER_COLOR, colirify otherwise. */
 			*pixel = is_inside ? INNER_COLOR : COLORIFY(iterate);
 			#ifdef DEBUG
-			data_chars[col] = sprintf(data_chars, "%d", *pixel);
+			data_chars[col] = sprintf(data_chars, "%d ", *pixel);
 			#endif
 		}
 		DPRINT2("\nSlave %d calculated: %s\n", my_proc_idx, data_chars);
