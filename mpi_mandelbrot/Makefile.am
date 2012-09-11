@@ -8,6 +8,11 @@ build:
 	make clean;\
 	cd ..;
 
+debug:
+	cd src;\
+	make debug;\
+	cd ..;
+
 build_balanced:
 	cd src;\
 	make compile_balanced;\
