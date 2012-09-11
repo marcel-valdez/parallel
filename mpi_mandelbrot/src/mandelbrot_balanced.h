@@ -12,11 +12,13 @@
 	#define DPRINT1(MSG, VAR) (printf(MSG, VAR))
 	#define DPRINT2(MSG, VAR1, VAR2) (printf(MSG, VAR1, VAR2))
 	#define DPRINT3(MSG, VAR1, VAR2, VAR3) (printf(MSG, VAR1, VAR2, VAR3))
+	#define DECLARE(X) (X)
 #else
 	#define DPRINT(X) ()
 	#define DPRINT1(MSG, VAR) ()
 	#define DPRINT2(MSG, VAR1, VAR2) ()
 	#define DPRINT3(MSG, VAR1, VAR2, VAR3) ()
+	#define DECLARE(X) ()
 #endif
 
 #include "mandelbrot_common.h"
@@ -143,6 +145,9 @@ void mandelbrot_slave(
 	int command = CALCULATE;	
 	mpi_receive_single_from_master(&row_index, CALCULATE);  
 	DPRINT2("\nSlave %d received calculation for row: %d\n", my_proc_idx, row_index);
+	#ifdef DEBUG
+	char data_chars[cols];
+	#endif
 	while(command == CALCULATE)
 	{		
 		int y = row_index;
@@ -177,8 +182,9 @@ void mandelbrot_slave(
 			
 	/* If pixel is inside mandelbrot, then set it INNER_COLOR, colirify otherwise. */
 			*pixel = is_inside ? INNER_COLOR : COLORIFY(iterate);
+			DECLARE(data_chars[col] = itoa(*pixel));
 		}
-		
+		DPRINT2("\nSlave %d calculated: %s\n", my_proc_idx, data_chars);
 		/*DPRINT("}");*/
 		printf("Slave %d is sending data back to the server\n", my_proc_idx);
 		mpi_send_master(row_addr, cols, RESULT);
