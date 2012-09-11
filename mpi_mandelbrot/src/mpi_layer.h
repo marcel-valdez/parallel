@@ -172,9 +172,11 @@ void start(int arg_count, char * args[], int rows, int cols)
 */
 void end()
 {
+	printf("Finalizing MPI...\n");
 	MPI_Finalize();
 	if (status != NULL)
 	{
+		printf("Freeing MPI_Status object.\n");
 		free(status);
 	}
 }

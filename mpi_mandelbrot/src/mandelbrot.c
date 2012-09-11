@@ -13,7 +13,6 @@ int main(int arg_count, char * args[])
 {
 	int rows = atoi(args[arg_count - 2]);
 	int cols = atoi(args[arg_count - 1]);
-	/* int data[rows][cols]; */
 	int** data = malloc(rows * cols * INT_SIZE);
 	address data_addr = data;
 	arg_count = arg_count - 2;
