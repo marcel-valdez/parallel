@@ -34,7 +34,8 @@ int main(int arg_count, char * args[])
 		mandelbrot_master(data_addr, rows, cols, num_procs);
 		long int end_time = get_seconds_stamp();
 		long int elapsed_time = end_time - start_time;
-		printf("\nElapsed seconds: %ld\n", elapsed_time);
+		printf("\n**********************\n* ELAPSED SECONDS: %ld s*\n**********************",
+		       elapsed_time);
 	}
 	else
 	{
