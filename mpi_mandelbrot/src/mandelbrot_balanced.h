@@ -1,68 +1,139 @@
 #ifndef MANDELBROT_H
 #define MANDELBROT_H
 
-void mandelbrot_master(int** result, int rows, int cols, int proc_count)
-{
-	int worker_count = proc_count - 1;
-	int rows_slice = rows / worker_count;
-	int remainder = rows % worker_count;
-	
-	printf("Master prepares data.\n");
-	/* Inicializar datos */
-	init_array(result, rows, cols);	
+#ifndef bool
+	#define bool char
+	#define true 1
+	#define false 0
+#endif
 
-	/* Enviar renglones a cada proceso */
-	address result_addr = result;
-	
-	int i;
-	/* Wait for slaves to give data! */
-	for(i = 1; i <= worker_count; i++) {
-		MPI_Status* status;
-		address rows_to_receive_addr = move_pointer(result_addr, rows_slice * cols *  (i - 1));
-		int current_rows_slice = (i == worker_count) ? rows_slice + remainder : rows_slice;
-		printf("Master is waiting on Slave %d\n", i);
-		MPI_Recv(
-			rows_to_receive_addr,  /* where to store rows */
-			current_rows_slice * cols, /* amount of data to receive */
-			MPI_INT, /* type of data to receive */
-			i, /* Receive specifically from ith process  */
-			1, /* dumb value */
-			MPI_COMM_WORLD, /* WORLD! */
-			&status); /* Won't actually be used */
-	}	
+#include "mandelbrot_common.h"
+
+const int CALCULATE = 0x01;
+const int DIE = 0x10;
+const int RESULT = 0x100;
+
+/*
+* Obtiene la direccion de memoria del renglon de datos dentro del paquete de datos
+*/
+address get_row_addr(address data_addr)
+{
+	return data_addr + INT_SIZE;
 }
 
-
-void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, int total_procs)
+/*
+* Obtiene el indice del renglon en el paquete de datos
+*/
+int get_row_index(address data_addr)
 {
-	printf("Slave: %d starting\n", my_proc_idx);	
+	int* row_idx_ptr = data_addr;
+	
+	return *row_idx_ptr;
+}
+
+/*
+* Establece el indice del renglon en los datos, y regresa el indice
+* de la posicion 0 del renglon de datos.
+*/
+address set_row_index(address data_addr, int index)
+{
+	int* row_idx_ptr = data_addr;
+	*row_idx_ptr = index;
+	
+	return data_addr + INT_SIZE;
+}
+
+void mandelbrot_master(address result, int height, int width, int proc_count)
+{     
+	int pending_rows = 0; /* contador de renglones pendientes */
+	/* renglon que se envia */
+	int row_idx = 0;
+	/* indice del esclavo a quien enviar datos */
+	int slave_idx = 0;
+
+	printf("Master process is preparing data.\n");
+	/* Requiero que circule entre 1 - Max Slaves */
+	for (slave_idx = 1; row_idx < proc_count - 1; slave_idx = next_slave(slave_idx)) 
+	{    
+	#ifdef DEBUG
+		printf("Sending row: %d to slave %d\n", row_idx, slave_idx);
+	#endif
+		/* supone que proc_count < disp_height */
+		/* envia el comando de calcular el renglon al siguiente esclavo */
+		mpi_send_single(&row_idx, slave_idx, CALCULATE);
+		/* contar renglones enviados */
+		pending_rows++;
+		/* indice del siguiente renglon */
+		row_idx++;               
+	}
+	
+	printf("Master process is mapping data.\n");
+	address slave_data_addr = malloc(size_of_row(width) + 1);
+	do {
+		/* Recibir resultados de cualquier esclavo */
+		mpi_recv_from_any(slave_data_addr, size_of_row(width), RESULT);
+		/* Reducir conteo de renglones pendientes conforme se reciben */
+		pending_rows--; 
+		/* Obtener el indice del esclavo que envió el renglón!		*/
+		slave_idx = get_slave_from_status();
+		if (row_idx < height) {
+			/* enviar siguiente comando de calculo de renglon */
+			mpi_send_single(&row_idx, slave_idx, CALCULATE);
+			/* incrementar el conteo de renglones pendientes */
+			pending_rows++;
+			/* incrementar el índice del renglon a calcular */
+			row_idx++;
+		} else  {
+			/* matar al esclavo con indice slave_idx*/
+			mpi_send_single(&row_idx, slave_idx, DIE);
+		}
+		
+		/* Obtener el indice del renglon que se recibio del esclavo */
+		int new_row_idx = get_row_index(slave_data_addr);
+		/* Obtener la direccion de memoria del renglon recibido */
+		address new_row_addr = get_row_addr(slave_data_addr);		
+		/* Agregar el nuevo renglon a los datos */
+		append_row(result, new_row_addr, new_row_idx, width); 
+		
+	} while (pending_rows > 0);
+	
+	#ifdef DEBUG
+	printf("Last row_idx: %d\n", row_idx);
+	#endif
+	if (slave_data_addr != NULL)
+	{
+		free(slave_data_addr);
+		slave_data_addr = NULL;
+	}
+	
+	printf("Master process finished.\n");
+}
+
+void mandelbrot_slave(
+	address row_addr, 
+	int total_rows, 
+	int cols, 
+	int my_proc_idx,
+	int total_procs)/* Se usa como dummy para que sea igual que en el no balanceado */
+{
+	printf("\nSlave: %d starting\n", my_proc_idx);	
 	double min_real = - 2.0;
 	double max_real = 1.0;
 	double min_imaginary = - 1.2;
 	double max_imaginary = min_imaginary + (max_real - min_real) * total_rows / cols;
 	double real_factor = (max_real - min_real) / (cols - 1);
-	double imaginary_factor = (max_imaginary - min_imaginary) / (total_rows - 1);
-	int total_workers = total_procs - 1;
+	double imaginary_factor = (max_imaginary - min_imaginary) / (total_rows - 1);	
 	
-	/* Calculate and send result back! */
-	int rows_per_proc = total_rows / total_workers;
-	
-	/* If this process is the last to receive rows, then it expects all the remainder of rows */
-	int rows_slice = rows_per_proc + ((my_proc_idx == total_workers) ? total_rows % total_workers : 0);
-	#ifdef DEBUG
-	printf("My rows_slice: %d\n", rows_slice);
+	/* Start waiting for rows */
+	int row_index = 0;
+	int command = CALCULATE;	
+	mpi_receive_single_from_master(&row_index, CALCULATE);  
+	#ifdef DEBUG_HIGH
+	printf("\nCalculating row: %d\n", row_index);
 	#endif
-	MPI_Status* status;
-	
-	/* Calculate mandelbrot! */
-	address rows_addr = my_rows;
-	int row = 0;
-	for(row = 0; row < rows_slice; row++)
-	{
-		address row_addr = move_pointer(rows_addr, row * cols);
-		
-		/* 1 >= my_proc_idx < total_procs. No slave is process 0.  */
-		int y = ((my_proc_idx - 1) * rows_per_proc) + row;
+	while(command == CALCULATE)
+	{		
+		int y = row_index;
 		#ifdef DEBUG_HIGH
 		printf("\nrow: %d\n", y);
 		#endif
@@ -71,16 +142,17 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 		#ifdef DEBUG_HIGH
 		printf("cols: \n {");
 		#endif
+		address data_row_addr = set_row_index(row_addr, y);
 		for(col = 0; col < cols; col++)
 		{
 			#ifdef DEBUG_HIGH
 			printf("%d ", col);
 			#endif
 			double c_real = min_real + col * real_factor;
-			bool is_inside = true;
-			int iterate = 0;
 			double z_real = c_real;
 			double z_imaginary = c_imaginary;
+			bool is_inside = true;
+			int iterate = 0;
 			for(iterate = 0; iterate < MAX_ITERATIONS; iterate++)
 			{
 				double z_real2 = SQR(z_real);
@@ -96,25 +168,20 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 			}
 			
 			/* Get the pixel to draw */
-			address pixel_address = move_pointer(row_addr, col);
-			int * pixel = pixel_address;
+			int* pixel = get_cell(row_addr, col);
 			
-			/* If pixel is inside mandelbrot, then set it white, colirfy otherwise. */
+	/* If pixel is inside mandelbrot, then set it INNER_COLOR, colirify otherwise. */
 			*pixel = is_inside ? INNER_COLOR : COLORIFY(iterate);
 		}
+		
 		#ifdef DEBUG_HIGH
 		printf("}");
 		#endif
+		
+		printf("Slave %d is sending data back to the server\n", my_proc_idx);
+		mpi_send_master(row_addr, cols, RESULT);
+		mpi_receive_any_single_from_master(&row_index, &command);  
 	}
-	
-	printf("Slave %d is sending data back to the server\n", my_proc_idx);
-	MPI_Send(
-		&my_rows,
-		rows_slice * cols,
-		MPI_INT,
-		0,
-		1,
-		MPI_COMM_WORLD);
 	
 	printf("Slave %d is dying now.\n", my_proc_idx);
 }

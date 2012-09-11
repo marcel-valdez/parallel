@@ -9,7 +9,7 @@
 
 #include "mandelbrot_common.h"
 
-void mandelbrot_master(int** result, int rows, int cols, int proc_count)
+void mandelbrot_master(address result_addr, int rows, int cols, int proc_count)
 {
 	int worker_count = proc_count - 1;
 	int rows_slice = rows / worker_count;
@@ -17,11 +17,9 @@ void mandelbrot_master(int** result, int rows, int cols, int proc_count)
 	
 	printf("*************************\n* Master prepares data. *\n*************************\n");
 	/* Inicializar datos */
-	init_array(result, rows, cols);	
+	init_array(result_addr, rows, cols);	
 
-	/* Enviar renglones a cada proceso */
-	address result_addr = result;
-	
+	/* Enviar renglones a cada proceso */	
 	int i;
 	/* Wait for slaves to give data! */
 	for(i = 1; i <= worker_count; i++) {
@@ -29,15 +27,7 @@ void mandelbrot_master(int** result, int rows, int cols, int proc_count)
 		address rows_to_receive_addr = move_pointer(result_addr, rows_slice * cols *  (i - 1));
 		int current_rows_slice = (i == worker_count) ? rows_slice + remainder : rows_slice;
 		printf("Master is waiting on Slave %d\n", i);
-		mpi_receive(rows_to_receive_addr, current_rows_slice * cols, i);
-		/*MPI_Recv( */
-		/*	rows_to_receive_addr,  /* where to store rows */
-		/*	current_rows_slice * cols, /* amount of data to receive */
-		/*	MPI_INT, /* type of data to receive */
-		/*	i, /* Receive specifically from ith process  */
-		/*	1, /* dumb value */
-		/*	MPI_COMM_WORLD, /* WORLD! */
-		/*	&status); /* Won't actually be used */
+		mpi_receive_default(rows_to_receive_addr, current_rows_slice * cols, i);
 	}
 	
 	printf("*******************\n* Master is done. *\n*******************\n");
@@ -118,15 +108,7 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 	}
 	
 	printf("Slave %d is sending data back to the server\n", my_proc_idx);
-	mpi_send_default_master(&my_rows, rows_slice * cols);
-	/*MPI_Send(
-		&my_rows,
-		rows_slice * cols,
-		MPI_INT,
-		0,
-		1,
-		MPI_COMM_WORLD);*/
-	
+	mpi_send_default_master(&my_rows, rows_slice * cols);	
 	printf("Slave %d is dying now.\n", my_proc_idx);
 }
 
