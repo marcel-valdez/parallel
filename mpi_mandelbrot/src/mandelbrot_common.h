@@ -41,7 +41,9 @@ address move_to_row(address row_addr, int row, int col_size)
 
 void init_array(address array_address, int rows, int cols)
 {
+#ifdef DEBUG
 	printf("Initializing array with weird values\n");
+#endif
 	int k = 0;
 #ifdef DEBUG
 	printf("Received array address: %lu\n", array_address);

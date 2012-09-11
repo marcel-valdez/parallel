@@ -159,10 +159,14 @@ void start(int arg_count, char * args[], int rows, int cols)
 	printf("Initialize MPI\n");
 	MPI_Init(&arg_count, &args);
         /* Get number of processes */
+	#ifdef DEBUG
 	printf("Get number of processes\n");
+	#endif
 	MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
         /* Get my process index */
+	#ifdef DEBUG
 	printf("Get my process index\n");
+	#endif
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_proc_index);       
 	status = malloc(sizeof(MPI_Status));
 }
@@ -176,7 +180,9 @@ void end()
 	MPI_Finalize();
 	if (status != NULL)
 	{
+		#ifdef DEBUG
 		printf("\nProc: %d. Freeing MPI_Status object.\n", my_proc_index);
+		#endif
 		free(status);
 	}
 }
