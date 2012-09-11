@@ -187,7 +187,7 @@ void mandelbrot_slave(
 		}
 		DPRINT2("\nSlave %d calculated: %s\n", my_proc_idx, data_chars);
 		/*DPRINT("}");*/
-		printf("Slave %d is sending data back to the server\n", my_proc_idx);
+		DPRINT1("Slave %d is sending data back to the server\n", my_proc_idx);
 		mpi_send_master(row_addr, cols, RESULT);
 		mpi_receive_any_single_from_master(&row_index, &command);  
 	}
