@@ -3,8 +3,10 @@
 #include "mpi_layer.h"
 #ifdef BALANCED 
 	#include "mandelbrot_balanced.h"
+	char const * filename = "mandelbrot_balanced.png";
 #else
 	#include "mandelbrot_unbalanced.h"
+	char const * filename = "mandelbrot.png";
 #endif
 
 int main(int arg_count, char * args[])
@@ -14,7 +16,6 @@ int main(int arg_count, char * args[])
 	/* int data[rows][cols]; */
 	int** data = malloc(rows * cols * INT_SIZE);
 	address data_addr = data;
-	char const * filename = "mandelbrot.png";
 	arg_count = arg_count - 2;
 	start(arg_count, args, rows, cols);
 	
