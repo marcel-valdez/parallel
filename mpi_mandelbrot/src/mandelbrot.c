@@ -30,7 +30,6 @@ long int get_seconds_stamp()
 
 int main(int arg_count, char * args[])
 {
-	printf(program_title);
 	int rows = atoi(args[arg_count - 2]);
 	int cols = atoi(args[arg_count - 1]);
 	int** data = malloc(rows * cols * INT_SIZE);
@@ -44,6 +43,7 @@ int main(int arg_count, char * args[])
 	#endif
 	if (my_proc_index == 0)
 	{
+		printf(program_title);
 		long int start_time = get_seconds_stamp();
 		mandelbrot_master(data_addr, rows, cols, num_procs);
 		long int end_time = get_seconds_stamp();
