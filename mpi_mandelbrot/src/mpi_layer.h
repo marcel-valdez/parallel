@@ -164,6 +164,7 @@ void start(int arg_count, char * args[], int rows, int cols)
         /* Get my process index */
 	printf("Get my process index\n");
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_proc_index);       
+	status = malloc(sizeof(MPI_Status));
 }
 
 /*
@@ -172,6 +173,10 @@ void start(int arg_count, char * args[], int rows, int cols)
 void end()
 {
 	MPI_Finalize();
+	if (status != NULL)
+	{
+		free(status);
+	}
 }
 
 #endif
