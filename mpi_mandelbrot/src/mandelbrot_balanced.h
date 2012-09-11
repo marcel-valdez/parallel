@@ -152,7 +152,7 @@ void mandelbrot_slave(
 		address data_row_addr = set_row_index(row_addr, y);
 		for(col = 0; col < cols; col++)
 		{
-			DPRINT1("%d ", col);
+			/*DPRINT1("%d ", col);*/
 			double c_real = min_real + col * real_factor;
 			double z_real = c_real;
 			double z_imaginary = c_imaginary;
