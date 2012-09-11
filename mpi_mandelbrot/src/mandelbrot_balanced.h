@@ -63,7 +63,7 @@ void mandelbrot_master(address result, int height, int width, int proc_count)
 	/* indice del esclavo a quien enviar datos */
 	int slave_idx = 0;
 
-	printf("Master process is preparing data.\n");
+	printf("\nMaster process is preparing data.\n");
 	/* Requiero que circule entre 1 - Max Slaves */
 	for (slave_idx = 1; row_idx < proc_count - 1; slave_idx = next_slave(slave_idx)) 
 	{    
@@ -78,7 +78,7 @@ void mandelbrot_master(address result, int height, int width, int proc_count)
 		row_idx++;               
 	}
 	
-	printf("Master process is mapping data.\n");
+	printf("\nMaster process is mapping data.\n");
 	address slave_data_addr = malloc(size_of_row(width) + INT_SIZE);
 	do {
 		/* Recibir resultados de cualquier esclavo */
@@ -87,10 +87,10 @@ void mandelbrot_master(address result, int height, int width, int proc_count)
 		pending_rows--; 
 		/* Obtener el indice del esclavo que envio el renglon!		*/
 		slave_idx = get_slave_from_status();
-		DPRINT1("Received data from slave %d", slave_idx);
+		DPRINT1("\nReceived data from slave %d\n", slave_idx);
 		if (row_idx < height) {
 			/* enviar siguiente comando de calculo de renglon */
-			DPRINT2("Sending row %d calculation to slave %d", row_idx, slave_idx);
+			DPRINT2("\nSending row %d calculation to slave %d\n", row_idx, slave_idx);
 			mpi_send_single(&row_idx, slave_idx, CALCULATE);
 			/* incrementar el conteo de renglones pendientes */
 			pending_rows++;
@@ -98,13 +98,13 @@ void mandelbrot_master(address result, int height, int width, int proc_count)
 			row_idx++;
 		} else  {
 			/* matar al esclavo con indice slave_idx*/
-			DPRINT1("Killin slave %d", slave_idx);
+			DPRINT1("\nKilling slave %d\n", slave_idx);
 			mpi_send_single(&row_idx, slave_idx, DIE);
 		}
 		
 		/* Obtener el indice del renglon que se recibio del esclavo */
 		int new_row_idx = get_row_index(slave_data_addr);
-		DPRINT2("Got row %d from slave %d", new_row_idx, slave_idx);
+		DPRINT2("\nGot row %d from slave %d\n", new_row_idx, slave_idx);
 		/* Obtener la direccion de memoria del renglon recibido */
 		address new_row_addr = get_row_addr(slave_data_addr);		
 		/* Agregar el nuevo renglon a los datos */
@@ -112,7 +112,7 @@ void mandelbrot_master(address result, int height, int width, int proc_count)
 		
 	} while (pending_rows > 0);
 	
-	DPRINT1("Last row_idx: %d\n", row_idx);
+	DPRINT1("\nLast row_idx: %d\n", row_idx);
 
 	if (slave_data_addr != NULL)
 	{
@@ -146,10 +146,9 @@ void mandelbrot_slave(
 	while(command == CALCULATE)
 	{		
 		int y = row_index;
-		DPRINT1("\nrow: %d\n", y);
 		double c_imaginary = max_imaginary - (y * imaginary_factor);
 		int col = 0;
-		DPRINT("cols: \n {");
+		/*DPRINT("cols: \n {");*/
 		address data_row_addr = set_row_index(row_addr, y);
 		for(col = 0; col < cols; col++)
 		{
@@ -180,7 +179,7 @@ void mandelbrot_slave(
 			*pixel = is_inside ? INNER_COLOR : COLORIFY(iterate);
 		}
 		
-		DPRINT("}");		
+		/*DPRINT("}");*/
 		printf("Slave %d is sending data back to the server\n", my_proc_idx);
 		mpi_send_master(row_addr, cols, RESULT);
 		mpi_receive_any_single_from_master(&row_index, &command);  
