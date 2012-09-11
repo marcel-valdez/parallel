@@ -22,6 +22,8 @@
 #endif
 
 #include "mandelbrot_common.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 const int CALCULATE = 0x01;
 const int DIE = 0x10;
@@ -178,11 +180,13 @@ void mandelbrot_slave(
 			}
 			
 			/* Get the pixel to draw */
-			int* pixel = get_cell(row_addr, col);
+			int* pixel = get_cell(data_row_addr, col);
 			
 	/* If pixel is inside mandelbrot, then set it INNER_COLOR, colirify otherwise. */
 			*pixel = is_inside ? INNER_COLOR : COLORIFY(iterate);
-			DECLARE(data_chars[col] = itoa(*pixel));
+			#ifdef DEBUG
+			data_chars[col] = sprintf(data_chars, "%d", *pixel);
+			#endif
 		}
 		DPRINT2("\nSlave %d calculated: %s\n", my_proc_idx, data_chars);
 		/*DPRINT("}");*/
