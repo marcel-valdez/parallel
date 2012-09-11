@@ -103,8 +103,7 @@ int mpi_receive_default(address data_addr, int data_size, int source)
  */
 int mpi_receive(address data_addr, int data_size, int source, int tag)
 {
-	int* data_ptr = data_addr;
-	return MPI_Recv(&data_ptr, data_size, MPI_INT, source, tag, MPI_COMM_WORLD, status);
+	return MPI_Recv(data_addr, data_size, MPI_INT, source, tag, MPI_COMM_WORLD, status);
 }
 
 /*
@@ -148,8 +147,7 @@ void mpi_send_single(address value_addr, int dest_process, int tag)
 */
 void mpi_send(address data_addr, int data_size, int dest_process, int tag)
 {
-	int* data_ptr = data_addr;
-	MPI_Send(&data_ptr, data_size, MPI_INT, dest_process, tag, MPI_COMM_WORLD);
+	MPI_Send(data_addr, data_size, MPI_INT, dest_process, tag, MPI_COMM_WORLD);
 }
 
 /*
