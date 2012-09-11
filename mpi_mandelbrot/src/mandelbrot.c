@@ -7,16 +7,16 @@
 #ifdef SERIAL
 	#include "mandelbrot_serial.h"
 	char const * filename = "mandelbrot_serial.png";
-	char const * program_title = "\n     MANDELBROT SERIALIZED CALCULATION\n";
+	char const * program_title = "\n     MANDELBROT LINEAR CALCULATION\n";
 #else
 	#ifdef BALANCED 
 		#include "mandelbrot_balanced.h"
 		char const * filename = "mandelbrot_balanced.png";
-		char const * program_title = "\n     MANDELBROT BALANCED PARALEL CALCULATION\n";
+		char const * program_title = "\n     MANDELBROT BALANCED PARALLEL CALCULATION\n";
 	#else
 		#include "mandelbrot_unbalanced.h"
 		char const * filename = "mandelbrot.png";
-		char const * program_title = "\n     MANDELBROT NAIVE PARALEL CALCULATION\n";
+		char const * program_title = "\n     MANDELBROT NAIVE PARALLEL CALCULATION\n";
 	#endif
 #endif
 
