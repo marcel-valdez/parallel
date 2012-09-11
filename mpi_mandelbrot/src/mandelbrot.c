@@ -38,6 +38,8 @@ int main(int arg_count, char * args[])
 			printf("Printing mandelbrot\n");
 			print_mandelbrot(data, rows, cols);
 		}
+		
+		printf("Done creating mandelbrot. Good bye :)");
 	}
 	
 	return 0;
