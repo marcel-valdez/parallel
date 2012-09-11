@@ -23,7 +23,7 @@ typedef unsigned long int address;
 /*
 * Es el TAG default
 */
-const int DEFAULT_TAG = 0xFFFF;
+const int DEFAULT_TAG = 0xFFF;
 
 /*
 * Es el indice de proceso actual
@@ -65,8 +65,8 @@ int next_slave(int slave_index)
 int mpi_receive_any_single_from_master(address value_addr, address tag_addr)
 {
 	int result = mpi_receive_single_from_master(value_addr, MPI_ANY_TAG);
-	int* tag = tag_addr;
-	*tag = (*status).MPI_TAG;
+	int* tag_ptr = tag_addr;
+	*tag_ptr = (*status).MPI_TAG;
 	
 	return result;
 }
@@ -103,7 +103,7 @@ int mpi_receive_default(address data_addr, int data_size, int source)
  */
 int mpi_receive(address data_addr, int data_size, int source, int tag)
 {
-	return MPI_Recv(data_addr, data_size, MPI_INT, source, tag, MPI_COMM_WORLD, &status);
+	return MPI_Recv(data_addr, data_size, MPI_INT, source, tag, MPI_COMM_WORLD, status);
 }
 
 /*
