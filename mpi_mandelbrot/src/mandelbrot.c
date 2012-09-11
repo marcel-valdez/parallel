@@ -7,13 +7,16 @@
 #ifdef SERIAL
 	#include "mandelbrot_serial.h"
 	char const * filename = "mandelbrot_serial.png";
+	char const * program_title = "\n     MANDELBROT SERIALIZED CALCULATION\n";
 #else
 	#ifdef BALANCED 
 		#include "mandelbrot_balanced.h"
 		char const * filename = "mandelbrot_balanced.png";
+		char const * program_title = "\n     MANDELBROT BALANCED PARALEL CALCULATION\n";
 	#else
 		#include "mandelbrot_unbalanced.h"
 		char const * filename = "mandelbrot.png";
+		char const * program_title = "\n     MANDELBROT NAIVE PARALEL CALCULATION\n";
 	#endif
 #endif
 
@@ -27,6 +30,7 @@ long int get_seconds_stamp()
 
 int main(int arg_count, char * args[])
 {
+	printf(program_title);
 	int rows = atoi(args[arg_count - 2]);
 	int cols = atoi(args[arg_count - 1]);
 	int** data = malloc(rows * cols * INT_SIZE);
