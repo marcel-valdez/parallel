@@ -64,8 +64,10 @@ void mandelbrot_master(address result, int height, int width, int proc_count)
 	int row_idx = 0;
 	/* indice del esclavo a quien enviar datos */
 	int slave_idx = 0;
-
-	printf("\nMaster process is preparing data.\n");
+	#ifdef DEBUG
+	DPRINT("\nMaster process is preparing data.\n");
+	#endif
+	printf("Calculando mandelbrot con optimizacion de mapeo.... \n");
 	/* Requiero que circule entre 1 - Max Slaves */
 	for (slave_idx = 1; row_idx < proc_count - 1; slave_idx = next_slave(slave_idx)) 
 	{    
@@ -79,7 +81,8 @@ void mandelbrot_master(address result, int height, int width, int proc_count)
 		row_idx++;               
 	}
 	
-	printf("\nMaster process is mapping data.\n");
+
+	DPRINT("\nMaster process is mapping data.\n");
 	address slave_data_addr = malloc(size_of_row(width) + INT_SIZE);
 	do {
 		/* Recibir resultados de cualquier esclavo */
@@ -121,7 +124,7 @@ void mandelbrot_master(address result, int height, int width, int proc_count)
 		slave_data_addr = NULL;
 	}
 	
-	printf("Master process finished.\n");
+	DPRINT("Master process finished.\n");
 }
 
 void mandelbrot_slave(
@@ -131,7 +134,7 @@ void mandelbrot_slave(
 	int my_proc_idx,
 	int total_procs)/* Se usa como dummy para que sea igual que en el no balanceado */
 {
-	printf("\nSlave: %d starting\n", my_proc_idx);	
+	DPRINT1("\nSlave: %d starting\n", my_proc_idx);	
 	double min_real = - 2.0;
 	double max_real = 1.0;
 	double min_imaginary = - 1.2;
@@ -191,8 +194,8 @@ void mandelbrot_slave(
 		mpi_send_master(row_addr, cols, RESULT);
 		mpi_receive_any_single_from_master(&row_index, &command);  
 	}
-	
-	printf("Slave %d is dying now.\n", my_proc_idx);
+
+	DPRINT1("Slave %d is dying now.\n", my_proc_idx);
 }
 
 #endif /* MANDELBROT_H */

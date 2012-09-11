@@ -11,6 +11,7 @@
 
 void mandelbrot_master(address my_rows, int total_rows, int cols, int num_procs)
 {
+	printf("Calculando mandelbrot linearmente...\n");
 	double min_real = - 2.0;
 	double max_real = 1.0;
 	double min_imaginary = - 1.2;

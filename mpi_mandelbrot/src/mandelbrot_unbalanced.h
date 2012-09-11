@@ -14,11 +14,12 @@ void mandelbrot_master(address result_addr, int rows, int cols, int proc_count)
 	int worker_count = proc_count - 1;
 	int rows_slice = rows / worker_count;
 	int remainder = rows % worker_count;
-	
+	#ifdef DEBUG
 	printf("*************************\n* Master prepares data. *\n*************************\n");
+	#endif
 	/* Inicializar datos */
 	init_array(result_addr, rows, cols);	
-
+	printf("Calculando mandelbrot paralelamente sin optimizar mapeo....\n");
 	/* Enviar renglones a cada proceso */	
 	int i;
 	/* Wait for slaves to give data! */
@@ -26,17 +27,22 @@ void mandelbrot_master(address result_addr, int rows, int cols, int proc_count)
 		/* MPI_Status* status; */
 		address rows_to_receive_addr = move_pointer(result_addr, rows_slice * cols *  (i - 1));
 		int current_rows_slice = (i == worker_count) ? rows_slice + remainder : rows_slice;
+		#ifdef DEBUG
 		printf("Master is waiting on Slave %d\n", i);
+		#endif
 		mpi_receive_default(rows_to_receive_addr, current_rows_slice * cols, i);
 	}
-	
+	#ifdef DEBUG	
 	printf("*******************\n* Master is done. *\n*******************\n");
+	#endif
 }
 
 
 void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, int total_procs)
 {
+	#ifdef DEBUG
 	printf("Slave: %d starting\n", my_proc_idx);	
+	#endif
 	double min_real = - 2.0;
 	double max_real = 1.0;
 	double min_imaginary = - 1.2;
@@ -106,10 +112,13 @@ void mandelbrot_slave(int** my_rows, int total_rows, int cols, int my_proc_idx, 
 		printf("}");
 		#endif
 	}
-	
+	#ifdef DEBUG	
 	printf("Slave %d is sending data back to the server\n", my_proc_idx);
+	#endif
 	mpi_send_default_master(rows_addr, rows_slice * cols);	
+	#ifdef DEBUG
 	printf("Slave %d is dying now.\n", my_proc_idx);
+	#endif
 }
 
 #endif /* MANDELBROT_H */
