@@ -68,7 +68,7 @@ void mandelbrot_master(address result, int height, int width, int proc_count)
 	}
 	
 	printf("Master process is mapping data.\n");
-	address slave_data_addr = malloc(size_of_row(width) + 1);
+	address slave_data_addr = malloc(size_of_row(width) + INT_SIZE);
 	do {
 		/* Recibir resultados de cualquier esclavo */
 		mpi_recv_from_any(slave_data_addr, size_of_row(width), RESULT);

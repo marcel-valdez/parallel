@@ -21,5 +21,5 @@ run:
 	mpiexec.mpich2 -machinefile /mirror/machines -np 5 $(PWD)/bin/mandelbrot 640 480
 
 run_balanced:
-	cd bind;\
+	cd bin;\
 	mpiexec.mpich2 -machinefile /mirror/machines -np 5 $(PWD)/bin/mandelbrot_balanced 640 480

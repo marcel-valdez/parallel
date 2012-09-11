@@ -161,7 +161,7 @@ START_TEST (test_balanced_slave)
 	
 	if (cols > 100 || rows > 100) {
 		printf("Test data is too big, writing to file mandelbrot_balanced.png\n");
-		write_to_file(&data, rows, cols, "mandelbrot_balanced.bmp");
+		write_to_file(&data, rows, cols, "mandelbrot_balanced.png");
 	} else {
 		print_mandelbrot(data, rows, cols);
 	}

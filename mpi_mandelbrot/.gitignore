@@ -31,3 +31,7 @@ compile
 *_
 *.*~
 tests/check_mandelbrot
+tests/check_mandelbrot_balanced
+tests/check_mandelbrot_common
+tests/*.png
+tests/*.bmp
