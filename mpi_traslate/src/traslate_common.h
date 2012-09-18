@@ -108,6 +108,8 @@ void read_file(int* pixel_data, int* width_ptr, int* height_ptr, char* filename)
     int req_comp = 4;
     DPRINT("\nLoading image data.\n");
     pixel_data = (int*) stbi_load(filename, width_ptr, height_ptr, &comp, req_comp);
+    DPRINT3("stbi_load results= *width_ptr: %d,*height_ptr: %d, comp: %d\n",
+            *width_ptr, *height_ptr, comp);
 
     DPRINT("\nReturning control to main program.\n");
 }
