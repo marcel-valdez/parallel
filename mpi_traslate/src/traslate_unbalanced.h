@@ -138,7 +138,7 @@ void traslate_slave(int my_proc_idx, int total_procs)
 #define RECV_OPDATA_IMPL
 void receive_operation_data(int* opData)
 {
-    DPRINT1("receive_operation_data(opData: %lu)", opData);
+    DPRINT1("\nreceive_operation_data(opData: %lu)", opData);
     mpi_recv_default_from_master((address)opData, 3);
 }
 #endif
