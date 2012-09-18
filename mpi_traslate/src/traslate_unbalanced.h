@@ -139,7 +139,9 @@ void traslate_slave(int my_proc_idx, int total_procs)
 void receive_operation_data(int* opData)
 {
     DPRINT1("\nreceive_operation_data(opData: %lu)", opData);
+    DPRINT("\nWaiting for operation data from master...");
     mpi_recv_default_from_master((address)opData, 3);
+    DPRINT3("\nMaster gave data: %d, %d, %d", *opData, *(opData + 1), *(opData + 2));
 }
 #endif
 
