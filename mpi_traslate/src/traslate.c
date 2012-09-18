@@ -37,9 +37,9 @@ int main(int arg_count, char * args[])
     
         /* Ejecutar algoritmo */
         address new_image_addr = traslate_master(
-                                                 (*image).PixelData,
-                                                 (*image).Height,
-                                                 (*image).Width,
+                                                 pixel_data,
+                                                 height,
+                                                 width,
                                                  num_procs,
                                                  deltaX);
     
@@ -52,13 +52,12 @@ int main(int arg_count, char * args[])
         /* Imprimir resultados */
         printf("Escribiendo imagen: %s\n", translacion);
         write_to_file((char*)new_image_addr,
-                      (*image).Height,
-                      (*image).Width,
+                      height,
+                      width,
                       translacion);
     
         /* Liberar recursos */
-        close_file(image);
-        safe_free(image);
+        close_file(pixel_data);
         safe_free((void*)new_image_addr);
         printf("Programa terminado. Adios. :)\n");
     }
