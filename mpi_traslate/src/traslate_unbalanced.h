@@ -82,7 +82,7 @@ address traslate_master(address image_data, int height, int width, int proc_coun
     int i;
     /* Wait for slaves to give data! */
     for(i = 1; i <= worker_count; i++) {
-	address rows_to_receive_addr = move_pointer(image_data, rows_slice * width *  (i - 1));
+	address rows_to_receive_addr = move_pointer(new_image_data_addr, rows_slice * width *  (i - 1));
 	int current_rows_slice = (i == worker_count) ? rows_slice + remainder : rows_slice;
 	DPRINT1("Master is waiting on Slave %d\n", i);
 	mpi_receive_default(rows_to_receive_addr, current_rows_slice * width, i);

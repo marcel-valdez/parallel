@@ -92,7 +92,7 @@ START_TEST (test_read_file)
 
 	printf("\nReset...\n");
 
-        close_file(pixel_data);
+        close_file(pixel_ptr);
 	
 	printf("\n********* PASS *********\n");
 }
