@@ -15,8 +15,8 @@ long int get_seconds_stamp()
 
 int main(int arg_count, char * args[])
 {
-    char* filename = args[arg_count - 1];
-    int deltaX = atoi(args[arg_count - 2]);
+    char* filename = args[arg_count - 2];
+    int deltaX = atoi(args[arg_count - 1]);
     arg_count -= 2;
     
     start(arg_count, args);

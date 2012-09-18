@@ -63,8 +63,8 @@ START_TEST (test_read_file)
 	printf("* Test for read_image_file  *\n");
 	printf("******************************\n");
 
-	printf("\nArrange... \n");	
-	char filename[] = "mandelbrot.png";
+	printf("\nArrange... \n");     
+	char filename[] = "/mirror/mpi/mpi_traslate/bin/mandelbrot.png";
 	int expected_width = 320;
 	int expected_height = 240;
 	int width;
