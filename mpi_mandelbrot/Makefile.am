@@ -37,13 +37,19 @@ run_serial:
 	chmod +x mandelbrot_serial;\
 	./mandelbrot_serial 960 1280
 
+run_parallel_custom:
+	cd bin;\
+	mpiexec.mpich2 -machinefile /mirror/machines -np $(np) $(PWD)/bin/mandelbrot $(height) $(width);\
+	mpiexec.mpich2 -machinefile /mirror/machines -np $(np) $(PWD)/bin/mandelbrot_balanced $(height) $(width);\
+	cd ..
+	
 run_unbalanced_custom:
 	cd bin;\
-	mpiexec.mpich2 -machinefile /mirror/machines -np 5 $(PWD)/bin/mandelbrot $(height) $(width)
+	mpiexec.mpich2 -machinefile /mirror/machines -np $(np) $(PWD)/bin/mandelbrot $(height) $(width)
 
 run_balanced_custom:
 	cd bin;\
-	mpiexec.mpich2 -machinefile /mirror/machines -np 5 $(PWD)/bin/mandelbrot_balanced $(height) $(width)
+	mpiexec.mpich2 -machinefile /mirror/machines -np $(np) $(PWD)/bin/mandelbrot_balanced $(height) $(width)
 	
 run_serial_custom:
 	cd bin;\
