@@ -33,19 +33,12 @@ typedef unsigned long int address;
 	#endif
 #endif
 
-typedef struct {
-   int  Width;
-   int  Height;
-   char* Filename;
-   int* PixelData;
-} ImageInfo;
-
 
 void safe_free(void* ptr);
 
-void read_file(ImageInfo* image_info, char* filename);
+void read_file(int* pixel_data, int* width_ptr, int* height_ptr, char* filename);
 
-void close_file(ImageInfo* image);
+void close_file(int* pixel_data);
 
 int size_of_data(int size);
 
@@ -106,28 +99,22 @@ void write_to_file(address data, int rows, int cols, char const* filename)
     stbi_write_png(filename, cols, rows, 3, data, cols * INT_SIZE);
 }
 
-void read_file(ImageInfo* image, char* filename)
+void read_file(int* pixel_data, int* width_ptr, int* height_ptr, char* filename)
 {
     DPRINT("\nInit read_file variables.\n");
-    int width = 0;
-    int height = 0;
     int comp = 0;
     /* Se especifican 4 componentes de 8 bits por pixel, para tener
      * pixeles que quepan exactamente en un numero int */
     int req_comp = 4;
     DPRINT("\nLoading image data.\n");
-    char* data = stbi_load(filename, &width, &height, &comp, req_comp);
-    DPRINT("\nSetting image information.");
-    (*image).PixelData = (int*)data;
-    (*image).Filename = filename;
-    (*image).Width = width;
-    (*image).Height = height;
+    pixel_data = (int*) stbi_load(filename, width_ptr, height_ptr, &comp, req_comp);
+
     DPRINT("\nReturning control to main program.\n");
 }
 
-void close_file(ImageInfo* image)
+void close_file(int* pixel_data)
 {
-    stbi_image_free((char*)((*image).PixelData));
+    stbi_image_free((char*)pixel_data);
 }
 
 

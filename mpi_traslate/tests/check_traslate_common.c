@@ -67,24 +67,26 @@ START_TEST (test_read_file)
 	char filename[] = "mandelbrot.png";
 	int expected_width = 320;
 	int expected_height = 240;
-	ImageInfo* actual = (ImageInfo*)(malloc(sizeof(ImageInfo)));
+	int width;
+	int height;
+        int* pixel_data;
 			   
 	printf("\nAct... \n");
-	read_file(actual, filename);
+	read_file(pixel_data, &width, &height, filename);
 	
 	printf("\nAssert... \n");
-	fail_unless(expected_width == (*actual).Width,
+	fail_unless(expected_width == width,
 			"Expected %d but found %d", 
 			expected_width,
-			(*actual).Width);
-	fail_unless(expected_height == (*actual).Height,
+			width);
+	fail_unless(expected_height == height,
 			"Expected %d but found %d", 
 			expected_height,
-		    (*actual).Height);
+		        height);
 
 	printf("\nReset...\n");
 
-        close_file(filename);
+        close_file(pixel_data);
 	
 	printf("\n********* PASS *********\n");
 }

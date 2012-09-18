@@ -26,8 +26,11 @@ int main(int arg_count, char * args[])
         printf(program_title);
 
         /* Obtener informacion de la imagen */
-        ImageInfo* image = (ImageInfo*)(malloc(sizeof(ImageInfo)));
-        read_file(image, filename);
+        int width;
+        int height;
+        int* pixel_data;
+
+        read_file(pixel_data, &width, &height, filename);
     
         /* Iniciar temporizador */
         long int start_time = get_seconds_stamp();

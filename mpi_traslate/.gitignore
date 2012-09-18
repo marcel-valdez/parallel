@@ -30,9 +30,8 @@ tests/.deps/
 compile
 *_
 *.*~
-tests/check_mandelbrot
-tests/check_mandelbrot_balanced
-tests/check_mandelbrot_common
+tests/check_traslate
+tests/check_traslate_common
 tests/*.png
 tests/*.bmp
 src/#*
