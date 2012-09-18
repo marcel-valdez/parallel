@@ -89,6 +89,8 @@ address traslate_master(address image_data, int height, int width, int proc_coun
     }
 
     DPRINT("*******************\n* Master is done. *\n*******************\n");
+
+    return new_image_data_addr;
 }
 
 /*
