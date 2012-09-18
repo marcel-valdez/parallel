@@ -187,15 +187,10 @@ void start(int arg_count, char * args[])
 	#endif
 	MPI_Init(&arg_count, &args);
         /* Get number of processes */
-	#ifdef DEBUG
-	printf("Get number of processes\n");
-	#endif
 	MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
         /* Get my process index */
-	#ifdef DEBUG
-	printf("Get my process index\n");
-	#endif
-	MPI_Comm_rank(MPI_COMM_WORLD, &my_proc_index);       
+	MPI_Comm_rank(MPI_COMM_WORLD, &my_proc_index);
+        /* Assign status variable */
 	status = malloc(sizeof(MPI_Status));
 }
 

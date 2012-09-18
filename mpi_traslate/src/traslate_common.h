@@ -140,7 +140,7 @@ int get_slave_rows_slice(int slave_index, int total_slaves, int height)
 
 int get_slave_data_size(int slave_index, int total_slaves, int width, int height)
 {
-    return get_slave_rows_slice(slave_index, total_slaves, height) * width * INT_SIZE;
+    return get_slave_rows_slice(slave_index, total_slaves, height) * width;
 }
 
 address previous_row(address pixel_addr, int width)

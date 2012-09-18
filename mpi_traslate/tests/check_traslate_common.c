@@ -154,7 +154,7 @@ START_TEST (test_get_slave_data_size)
 	int total_slaves = 3;
 	int width = 1;
         int height = 4;
-	int expected_size[] = { 0, 1 * INT_SIZE, 1 * INT_SIZE, 2 * INT_SIZE };
+	int expected_size[] = { 0, 1, 1, 2 };
 	int actual_size[4];
 
 	printf("\nAct... \n");
