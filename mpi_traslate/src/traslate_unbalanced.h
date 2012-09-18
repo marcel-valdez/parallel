@@ -36,6 +36,8 @@ void move_row(address row_addr, int width, int deltaX);
 
 address traslate_master(address image_data, int height, int width, int proc_count, int deltaX)
 {
+    DPRINT3("traslate_master(image_data: %lu, height: %d, width: %d, proc_count, deltaX)",
+            image_data, height, width);
     /* El proceso maestro no es un 'worker' */
     int worker_count = proc_count - 1;
 
