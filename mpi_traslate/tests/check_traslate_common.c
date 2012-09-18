@@ -69,10 +69,10 @@ START_TEST (test_read_file)
 	int expected_height = 240;
 	int width;
 	int height;
-        int* pixel_data;
+        int* pixel_ptr;
 			   
 	printf("\nAct... \n");
-	read_file(pixel_data, &width, &height, filename);
+	pixel_ptr = read_file(&width, &height, filename);
 	
 	printf("\nAssert... \n");
 	fail_unless(expected_width == width,
@@ -82,7 +82,13 @@ START_TEST (test_read_file)
 	fail_unless(expected_height == height,
 			"Expected %d but found %d", 
 			expected_height,
-		        height);
+		    height);
+
+	int i;
+	for(i = 0; i < width * height; i++) {
+            // No debe dar seg_fault
+	    int pixel = pixel_ptr[i];
+	}
 
 	printf("\nReset...\n");
 

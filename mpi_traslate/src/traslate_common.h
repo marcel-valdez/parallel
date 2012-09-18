@@ -36,7 +36,7 @@ typedef unsigned long int address;
 
 void safe_free(void* ptr);
 
-void read_file(int* pixel_data, int* width_ptr, int* height_ptr, char* filename);
+unsigned char* read_file(int* width_ptr, int* height_ptr, char* filename);
 
 void close_file(int* pixel_data);
 
@@ -99,7 +99,7 @@ void write_to_file(address data, int rows, int cols, char const* filename)
     stbi_write_png(filename, cols, rows, 3, data, cols * INT_SIZE);
 }
 
-void read_file(int* pixel_data, int* width_ptr, int* height_ptr, char* filename)
+unsigned char* read_file(int* width_ptr, int* height_ptr, char* filename)
 {
     DPRINT("\nInit read_file variables.\n");
     int comp = 0;
@@ -107,11 +107,12 @@ void read_file(int* pixel_data, int* width_ptr, int* height_ptr, char* filename)
      * pixeles que quepan exactamente en un numero int */
     int req_comp = 4;
     DPRINT("\nLoading image data.\n");
-    pixel_data = (int*) stbi_load(filename, width_ptr, height_ptr, &comp, req_comp);
+    unsigned char* pixel_data = stbi_load(filename, width_ptr, height_ptr, &comp, req_comp);
     DPRINT3("stbi_load results= *width_ptr: %d,*height_ptr: %d, comp: %d\n",
             *width_ptr, *height_ptr, comp);
 
     DPRINT("\nReturning control to main program.\n");
+    return pixel_data;
 }
 
 void close_file(int* pixel_data)

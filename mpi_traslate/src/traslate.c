@@ -28,9 +28,7 @@ int main(int arg_count, char * args[])
         /* Obtener informacion de la imagen */
         int width;
         int height;
-        int* pixel_data;
-
-        read_file(pixel_data, &width, &height, filename);
+        int* pixel_data = read_file(&width, &height, filename);
     
         /* Iniciar temporizador */
         long int start_time = get_seconds_stamp();

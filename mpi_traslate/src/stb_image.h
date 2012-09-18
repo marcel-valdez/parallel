@@ -184,6 +184,16 @@
 // "skip" (skips some bytes of data), "eof" (reports if the stream is at the end).
 */
 
+#ifdef DEBUG
+	#ifndef DPRINT4
+		#define DPRINT4(X, X1, X2, X3, X4) printf(X, X1, X2, X3, X4)
+	#endif
+#else
+	#ifndef DPRINT4
+		#define DPRINT4(X, X1, X2, X3, X4)
+	#endif
+#endif
+
 #ifndef STBI_NO_STDIO
 
 #if defined(_MSC_VER) && _MSC_VER >= 0x1400
@@ -533,8 +543,15 @@ static stbi_uc *hdr_to_ldr(float   *data, int x, int y, int comp);
 
 static unsigned char *stbi_load_main(stbi *s, int *x, int *y, int *comp, int req_comp)
 {
-   if (stbi_jpeg_test(s)) return stbi_jpeg_load(s,x,y,comp,req_comp);
-   if (stbi_png_test(s))  return stbi_png_load(s,x,y,comp,req_comp);
+    if (stbi_jpeg_test(s)){
+	return stbi_jpeg_load(s,x,y,comp,req_comp);
+    }
+
+    if (stbi_png_test(s)) {
+	DPRINT4("\nstbi_load_main: stbi_png_load(s, *x: %d, *y: %d, *comp: %d, req_comp: %d)\n",
+               *x, *y, *comp, req_comp);
+	return stbi_png_load(s,x,y,comp,req_comp);
+    }
    if (stbi_bmp_test(s))  return stbi_bmp_load(s,x,y,comp,req_comp);
    if (stbi_gif_test(s))  return stbi_gif_load(s,x,y,comp,req_comp);
    if (stbi_psd_test(s))  return stbi_psd_load(s,x,y,comp,req_comp);
