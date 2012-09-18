@@ -163,7 +163,7 @@ void move_section(address rows_addr, int start, int count, int width, int deltaX
 
 void move_row(address row_addr, int width, int deltaX)
 {
-    DPRINT3("\nmove_row(row_addr: %lu, width: %d, deltaX: %d)\n", row_addr, width, deltaX);
+    /*DPRINT3("\nmove_row(row_addr: %lu, width: %d, deltaX: %d)\n", row_addr, width, deltaX);*/
     int x = 0;
     int x2 = 0;
     int* pending_pixel_ptr = get_cell(row_addr, 0);
