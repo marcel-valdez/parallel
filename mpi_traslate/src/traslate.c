@@ -5,7 +5,7 @@
 #include "traslate_unbalanced.h"
 
 char const * translacion = "translacion.png";
-char const * program_title = "\n     TRASLACION DE IMAGEN, EN PARALELO \n";
+char const * program_title = "\n*** TRANSLACION DE IMAGEN, EN PARALELO ***\n";
 time_t seconds;
 
 long int get_seconds_stamp()
