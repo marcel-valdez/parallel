@@ -9,10 +9,18 @@
 
 void assert_array(int* data, int* expected_data, int height, int width);
 
-OperationData* test_opData;
-OperationData* receive_operation_data()
+
+int opData_width = -1;
+int opData_height = -1;
+int opData_deltaX = -1;
+
+void receive_operation_data(int* opData)
 {
-    return test_opData;
+    *opData = opData_width;
+    opData += 1;
+    *opData = opData_height;
+    opData += 1;
+    *opData = opData_deltaX;
 }
 
 START_TEST (test_initialize)
@@ -78,6 +86,9 @@ START_TEST (test_slave)
 	const int cols = 3;
 	const int rows = 5;
 	const int deltaX = 2;
+	opData_width = cols;
+	opData_height = rows;
+        opData_deltaX = deltaX;
 
 	int data[5][3] =
 	{
@@ -123,10 +134,6 @@ START_TEST (test_slave)
 	    /* We have to re-allocate the OperationData, because the slave
 	     * frees that memory on each run.
 	     */
-            test_opData = (OperationData*)malloc(sizeof(OperationData));
-	    (*test_opData).Width = cols;
-	    (*test_opData).Height = rows;
-	    (*test_opData).DeltaX = deltaX;
 	    respond_buf_addr = worker_slice_addr;
             mpi_send_copy = &data[row_idx][0];
 	    traslate_slave(worker_idx, total_procs);
@@ -137,7 +144,6 @@ START_TEST (test_slave)
         assert_array(data, expected_data, cols, rows);
 
 	/* Reset */
-        test_opData = NULL;
 	respond_buf_addr = -1;
         mpi_send_copy = -1;
 	printf("\n********* PASS *********\n");

@@ -27,14 +27,8 @@
 #endif
 
 #include "traslate_common.h"
-typedef struct {
-    int Width;
-    int Height;
-    int DeltaX;
 
-} OperationData;
-
-OperationData* receive_operation_data();
+void receive_operation_data(int* opData);
 
 void move_image(address rows_addr, int start, int end, int deltaX);
 
@@ -55,10 +49,10 @@ address traslate_master(address image_data, int height, int width, int proc_coun
     address new_image_data_addr = malloc(size_of_data(width * height));
     DPRINT("*************************\n* Master prepares data. *\n*************************\n");
     /* Inicializar datos */
-    OperationData* opData = (OperationData*)malloc(sizeof(OperationData));
-    (*opData).Width = width;
-    (*opData).Height = height;
-    (*opData).DeltaX = deltaX;
+    int opData[3];
+    opData[0] = width;
+    opData[1] = height;
+    opData[2] = deltaX;
     printf("Calculando traslate paralelamente sin optimizar mapeo....\n");
 
 
@@ -67,7 +61,7 @@ address traslate_master(address image_data, int height, int width, int proc_coun
     for(proc = 1; proc <= worker_count; proc++) {
 
 	/* Enviar primero los datos sobre los renglones a enviar*/
-	mpi_send_single_default_raw(opData, sizeof(OperationData), proc);
+	mpi_send_default(opData, 3, proc);
 
 	/* Obtener la direccion de memoria de los renglones que le corresponden al esclavo */
 	address row_data = move_pointer(
@@ -101,42 +95,40 @@ void traslate_slave(int my_proc_idx, int total_procs)
     DPRINT1("\n\n*** Slave: %d starting ***\n", my_proc_idx);
     /* numero total de esclavos */
     int total_workers = total_procs - 1;
-    /* opData.Width: anchura de la imagen */
-    /* opData.Height: altura de la imagen */
-    /* opData.DeltaX: distancia a mover la imagen */
-    OperationData* opData;
 
     /* direccion de memoria de los datos de los renglones */
     address rows_addr;
 
     /* obtener los datos que se recibiran del maestro: altura, anchura y delta X */
-    opData = receive_operation_data();
+    int opData[3];
+    receive_operation_data(opData);
+    int width = opData[0];
+    int height = opData[1];
+    int deltaX = opData[2];
 
     /* cantidad de renglones que me toca calcular */
     int rows_slice = get_slave_rows_slice(
 					  my_proc_idx,
 					  total_workers,
-					  (*opData).Height);
+					  height);
 
     /* alojar memoria, dinamicamente, para los renglones que se calcularan */
-    int rows_data_size = size_of_data(rows_slice * (*opData).Width);
+    int rows_data_size = size_of_data(rows_slice * width);
     rows_addr = malloc(rows_data_size);
-    DPRINT3("\nAllocated %d x %d pixels (%d)", rows_slice, (*opData).Width, rows_data_size);
+    DPRINT3("\nAllocated %d x %d pixels (%d)", rows_slice, width, rows_data_size);
     DPRINT1(" @%lu\n", rows_addr);
 
     /* obtener renglones del maestro */
-    mpi_recv_default_from_master(rows_addr, rows_slice * (*opData).Width);
+    mpi_recv_default_from_master(rows_addr, rows_slice * width);
 
     /* calcular nuevos pixeles */
-    move_section(rows_addr, 0, rows_slice, (*opData).Width, (*opData).DeltaX);
+    move_section(rows_addr, 0, rows_slice, width, deltaX);
 
     /* regresar pixeles al proceso maestro  */
     DPRINT1("Slave %d is sending data back to the server\n", my_proc_idx);
-    mpi_send_default_master(rows_addr, rows_slice * (*opData).Width);
+    mpi_send_default_master(rows_addr, rows_slice * width);
 
     /* liberar recursos */
-    DPRINT("\n\ntraslate_slave: Freeing opData resources");
-    safe_free((void*)opData);
     DPRINT("\n\ntraslate_slave: Freeing rows_addr resources");
     safe_free(rows_addr);
     DPRINT1("Slave %d is dying now.\n", my_proc_idx);
@@ -144,12 +136,9 @@ void traslate_slave(int my_proc_idx, int total_procs)
 
 #ifndef RECV_OPDATA_IMPL
 #define RECV_OPDATA_IMPL
-OperationData* receive_operation_data()
+void receive_operation_data(int* opData)
 {
-    OperationData* opData = (OperationData*)malloc(sizeof(OperationData));
-    mpi_recv_from_master_default_single_raw((address)opData, sizeof(OperationData));
-
-    return opData;
+    mpi_recv_default_from_master((address)opData, 3);
 }
 #endif
 
