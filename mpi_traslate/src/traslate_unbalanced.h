@@ -74,6 +74,8 @@ address traslate_master(address image_data, int height, int width, int proc_coun
 	int slave_data_size = get_slave_data_size(proc, worker_count, width, height);
 
 	/* Enviar los renglones tal cual.*/
+	DPRINT3("\nMaster: mpi_send_default(row_data: %lu, slave_data_size: %d, proc: %d)\n",
+                row_data, slave_data_size, proc);
 	mpi_send_default(row_data, slave_data_size, proc);
     }
 
