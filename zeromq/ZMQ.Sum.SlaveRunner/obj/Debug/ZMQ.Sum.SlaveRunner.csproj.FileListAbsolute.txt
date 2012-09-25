@@ -1,0 +1,6 @@
+D:\proyects\educational\paralela\zeromq\bin\libzmq.dll
+D:\proyects\educational\paralela\zeromq\bin\ZMQ.Sum.SlaveRunner.exe
+D:\proyects\educational\paralela\zeromq\bin\ZMQ.Sum.SlaveRunner.pdb
+D:\proyects\educational\paralela\zeromq\ZMQ.Sum.SlaveRunner\obj\Debug\ZMQ.Sum.SlaveRunner.csprojResolveAssemblyReference.cache
+D:\proyects\educational\paralela\zeromq\ZMQ.Sum.SlaveRunner\obj\Debug\ZMQ.Sum.SlaveRunner.exe
+D:\proyects\educational\paralela\zeromq\ZMQ.Sum.SlaveRunner\obj\Debug\ZMQ.Sum.SlaveRunner.pdb

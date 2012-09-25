@@ -1,0 +1,6 @@
+D:\proyects\educational\paralela\zeromq\bin\libzmq.dll
+D:\proyects\educational\paralela\zeromq\bin\sendrecv.master.exe
+D:\proyects\educational\paralela\zeromq\bin\sendrecv.master.pdb
+D:\proyects\educational\paralela\zeromq\ZMQ.Sum.MasterRunner\obj\Debug\ZMQ.Sum.SendRecv.Master.csprojResolveAssemblyReference.cache
+D:\proyects\educational\paralela\zeromq\ZMQ.Sum.MasterRunner\obj\Debug\sendrecv.master.exe
+D:\proyects\educational\paralela\zeromq\ZMQ.Sum.MasterRunner\obj\Debug\sendrecv.master.pdb

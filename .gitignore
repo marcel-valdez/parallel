@@ -1,0 +1,6 @@
+zeromq/ZMQ.Sum/obj/*
+zeromq/bin/*
+zeromq/ZMQ.Sum.SlaveRunner/obj/*
+zeromq/ZMQ.Sum.Test/bin/*
+zeromq/ZMQ.Sum.Test/obj/*
+zeromq/packages/*

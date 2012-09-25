@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZMQ.Sum", "ZMQ.Sum\ZMQ.Sum.csproj", "{755AC953-DFCB-47C2-A781-B2F3BD5E8396}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZMQ.Sum.Test", "ZMQ.Sum.Test\ZMQ.Sum.Test.csproj", "{BE067A9E-801D-4F48-A0B0-D26226AB04ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{0E5C7F6E-6D78-4FFD-B490-8CA0BD1A714D}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZMQ.Sum.SendRecv.Slave", "ZMQ.Sum.SlaveRunner\ZMQ.Sum.SendRecv.Slave.csproj", "{23807EBA-9596-43D3-B70E-C7292D34329C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZMQ.Sum.SendRecv.Master", "ZMQ.Sum.MasterRunner\ZMQ.Sum.SendRecv.Master.csproj", "{F798AF5A-B5B3-4BA0-BCD8-84AE509285BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{755AC953-DFCB-47C2-A781-B2F3BD5E8396}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{755AC953-DFCB-47C2-A781-B2F3BD5E8396}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{755AC953-DFCB-47C2-A781-B2F3BD5E8396}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{755AC953-DFCB-47C2-A781-B2F3BD5E8396}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE067A9E-801D-4F48-A0B0-D26226AB04ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE067A9E-801D-4F48-A0B0-D26226AB04ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE067A9E-801D-4F48-A0B0-D26226AB04ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE067A9E-801D-4F48-A0B0-D26226AB04ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23807EBA-9596-43D3-B70E-C7292D34329C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23807EBA-9596-43D3-B70E-C7292D34329C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23807EBA-9596-43D3-B70E-C7292D34329C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23807EBA-9596-43D3-B70E-C7292D34329C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F798AF5A-B5B3-4BA0-BCD8-84AE509285BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F798AF5A-B5B3-4BA0-BCD8-84AE509285BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F798AF5A-B5B3-4BA0-BCD8-84AE509285BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F798AF5A-B5B3-4BA0-BCD8-84AE509285BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
