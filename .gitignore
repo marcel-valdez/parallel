@@ -10,3 +10,5 @@ zeromq/packages/*
 /zeromq/ZMQ.Sum.MasterRunner/bin
 /zeromq/ZMQ.Sum.SlaveRunner/obj
 /zeromq/ZMQ.Sum.Test/obj
+/zeromq/TestResults
+/zeromq/packages
