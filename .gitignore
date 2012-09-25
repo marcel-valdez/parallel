@@ -4,3 +4,9 @@ zeromq/ZMQ.Sum.SlaveRunner/obj/*
 zeromq/ZMQ.Sum.Test/bin/*
 zeromq/ZMQ.Sum.Test/obj/*
 zeromq/packages/*
+/zeromq/ZMQ.Sum/obj
+/zeromq/ZMQ.Sum/bin
+/zeromq/ZMQ.Sum.MasterRunner/obj
+/zeromq/ZMQ.Sum.MasterRunner/bin
+/zeromq/ZMQ.Sum.SlaveRunner/obj
+/zeromq/ZMQ.Sum.Test/obj
