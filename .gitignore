@@ -9,3 +9,4 @@
 /zeromq/ZMQ.Sum.SlaveRunner/bin
 /zeromq/TestResults
 /zeromq/packages
+*.suo
