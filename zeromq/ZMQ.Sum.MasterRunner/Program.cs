@@ -1,37 +1,33 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using ZMQ.Common;
 
 namespace ZMQ.Sum.SendRecv
 {
-    static class Program
+    public static class Program
     {
+        private const string USO_CORRECTO = "Uso correcto:\n {0} [numero de esclavos] [numeros a sumar]";
+
         /// <summary>
         /// El punto de entrada de la aplicación
         /// </summary>
         [STAThread]
         public static void Main(string[] args)
         {
-            if (args.Length < 1)
+            Debug.Listeners.Add(new ConsoleTraceListener());
+            
+            int numeroDeEsclavos;
+            int cantidadDeNumeros;
+            if (ProgramHelper.ParsearParametrosMaestro(args, out numeroDeEsclavos, out cantidadDeNumeros, USO_CORRECTO))
             {
-                Console.WriteLine("Cuántos esclavos quieres?\nUso: sendrecv.master.exe [numero de esclavos]");
                 return;
             }
 
-            int slaveCount;
-            if (!int.TryParse(args[0], out slaveCount))
-            {
-                Console.WriteLine("Debes indicar el número de esclavos.\nUso: sendrecv.master.exe [numero de esclavos]");
-            }
-
-            if (slaveCount < 1 || slaveCount > 8)
-            {
-                Console.WriteLine("Por lo menos tienes que indicar 1 esclavo, máximo 8 esclavos.\nUso: sendrecv.master.exe [numero de esclavos]");
-            }
-
-            int[] numbers = Enumerable.Range(1, 1000).ToArray();
+            int[] numbers = Enumerable.Range(1, cantidadDeNumeros).ToArray();
             var stopWatch = Stopwatch.StartNew();
-            int resultado = 0;
+            double resultado = 0;
             using (var ctx = new Context())
             {
                 var sendSocket = ctx.Socket(SocketType.PUSH);
@@ -41,18 +37,19 @@ namespace ZMQ.Sum.SendRecv
 
                 sendSocket.Bind(Transport.TCP, "*", SENDPORT);
                 recvSocket.Bind(Transport.TCP, "*", RECVPORT);
-                using(var master = new SumadorMaestro(slaveCount, numbers, sendSocket, recvSocket))
+                using (var master = new SumadorSendRecvMaestro(numeroDeEsclavos, numbers, sendSocket, recvSocket))
                 {
                     Console.WriteLine("Ejecutando operación maestro.");
                     master.EjecutarOperacion();
-                    resultado = master.Result;
+                    resultado = master.Resultado;
                 }
             }
 
             stopWatch.Stop();
 
             Console.WriteLine("Se tardó: {0} milisegundos", stopWatch.ElapsedMilliseconds);
-            Console.WriteLine("Resultado de sumar del 1 al 1000: {0}", resultado);
+            Console.WriteLine("Se tardó: {0} ticks de reloj", stopWatch.ElapsedTicks);
+            Console.WriteLine("Resultado de sumar del 1 al {1}: {0}", resultado, numbers[numbers.Length - 1]);
 
             Console.ReadLine();
         }

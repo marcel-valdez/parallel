@@ -29,18 +29,18 @@ namespace ZMQ.SendRecv.Test
                     slave = context.Socket(SocketType.REP);
                     slave.Bind(Transport.TCP, BIND_HOSTNAME, TEST_PORT);
 
-                    using (SumadorEsclavo target = new SumadorEsclavo(slave, slave))
+                    using (SumadorSendRecvEsclavo target = new SumadorSendRecvEsclavo(slave, slave))
                     {
                         int[] numeros = new int[] { 1, 2, 4, 8, 16, 32, 64, 128 };
 
                         // Act
                         var task = Task.Factory.StartNew(() => target.EjecutarOperacion());
                         master.Send(numeros);
-                        int resultado = master.Recv<int>();
+                        double resultado = master.Recv<double>();
 
                         // Assert
                         Assert.That(resultado, Is.EqualTo(numeros.Sum()));
-                        Assert.That(target.Result, Is.EqualTo(resultado));
+                        Assert.That(target.Resultado, Is.EqualTo(resultado));
 
                         // Reset
                     }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="D:\proyects\educational\paralela\zeromq\ZMQ.Sum.Broadcast.Test\bin\Debug\ZMQ.Sum.Broadcast.Test.exe" total="1" errors="0" failures="1" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2012-09-26" time="02:01:25">
+  <environment nunit-version="2.6.0.12051" clr-version="4.0.30319.17929" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="D:\proyects\educational\paralela\zeromq\ZMQ.Sum.Broadcast.Test\bin\Debug" machine-name="SYSTEM" user="Marcel" user-domain="System" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="Assembly" name="D:\proyects\educational\paralela\zeromq\ZMQ.Sum.Broadcast.Test\bin\Debug\ZMQ.Sum.Broadcast.Test.exe" executed="True" result="Failure" success="False" time="0.559" asserts="0">
+    <results>
+      <test-suite type="Namespace" name="ZMQ" executed="True" result="Failure" success="False" time="0.553" asserts="0">
+        <results>
+          <test-suite type="Namespace" name="Sum" executed="True" result="Failure" success="False" time="0.553" asserts="0">
+            <results>
+              <test-suite type="Namespace" name="Broadcast" executed="True" result="Failure" success="False" time="0.553" asserts="0">
+                <results>
+                  <test-suite type="Namespace" name="Test" executed="True" result="Failure" success="False" time="0.553" asserts="0">
+                    <results>
+                      <test-suite type="TestFixture" name="SumadorMaestroTest" executed="True" result="Failure" success="False" time="0.551" asserts="0">
+                        <results>
+                          <test-case name="ZMQ.Sum.Broadcast.Test.SumadorMaestroTest.TestIfItCanBroadcastData" executed="True" result="Failure" success="False" time="0.546" asserts="3">
+                            <failure>
+                              <message><![CDATA[  Expected: 3.0d
+  But was:  1.0d
+]]></message>
+                              <stack-trace><![CDATA[at ZMQ.Sum.Broadcast.Test.SumadorMaestroTest.TestIfItCanBroadcastData() in d:\proyects\educational\paralela\zeromq\ZMQ.Sum.Broadcast.Test\SumadorMaestroTest.cs:line 100
+]]></stack-trace>
+                            </failure>
+                          </test-case>
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

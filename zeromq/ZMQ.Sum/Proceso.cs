@@ -35,7 +35,7 @@ namespace ZMQ
             }
         }
 
-        public T Result
+        public T Resultado
         {
             get;
             protected set;
