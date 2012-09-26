@@ -1,6 +1,0 @@
-D:\proyects\educational\paralela\zeromq\bin\libzmq.dll
-D:\proyects\educational\paralela\zeromq\bin\ZMQ.Sum.MasterRunner.exe
-D:\proyects\educational\paralela\zeromq\bin\ZMQ.Sum.MasterRunner.pdb
-D:\proyects\educational\paralela\zeromq\ZMQ.Sum.MasterRunner\obj\Debug\ZMQ.Sum.MasterRunner.csprojResolveAssemblyReference.cache
-D:\proyects\educational\paralela\zeromq\ZMQ.Sum.MasterRunner\obj\Debug\ZMQ.Sum.MasterRunner.exe
-D:\proyects\educational\paralela\zeromq\ZMQ.Sum.MasterRunner\obj\Debug\ZMQ.Sum.MasterRunner.pdb
