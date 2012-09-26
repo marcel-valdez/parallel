@@ -7,8 +7,8 @@
     <ProjectGuid>{BE067A9E-801D-4F48-A0B0-D26226AB04ED}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ZMQ.Sum.Test</RootNamespace>
-    <AssemblyName>ZMQ.Sum.Test</AssemblyName>
+    <RootNamespace>ZMQ.Sum.SendRecv.Test</RootNamespace>
+    <AssemblyName>ZMQ.Sum.SendRecv.Test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
