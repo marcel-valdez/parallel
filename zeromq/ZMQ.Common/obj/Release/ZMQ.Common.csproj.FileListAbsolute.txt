@@ -1,5 +1,0 @@
-D:\proyects\educational\paralela\zeromq\ZMQ.Common\bin\Release\ZMQ.Common.dll
-D:\proyects\educational\paralela\zeromq\ZMQ.Common\bin\Release\ZMQ.Common.pdb
-D:\proyects\educational\paralela\zeromq\ZMQ.Common\obj\Release\ZMQ.Common.csprojResolveAssemblyReference.cache
-D:\proyects\educational\paralela\zeromq\ZMQ.Common\obj\Release\ZMQ.Common.dll
-D:\proyects\educational\paralela\zeromq\ZMQ.Common\obj\Release\ZMQ.Common.pdb

@@ -77,6 +77,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ZMQ.Common\ZMQ.Common.csproj">
+      <Project>{9ed641ff-ff59-42e4-8fbb-d5e38eedf8d2}</Project>
+      <Name>ZMQ.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ZMQ.Sum\ZMQ.Sum.csproj">
       <Project>{755ac953-dfcb-47c2-a781-b2f3bd5e8396}</Project>
       <Name>ZMQ.Sum</Name>

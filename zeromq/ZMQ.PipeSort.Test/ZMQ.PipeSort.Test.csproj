@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{755AC953-DFCB-47C2-A781-B2F3BD5E8396}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{3188CC95-5605-4C7E-A0C6-851F7469CDAB}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ZMQ.Sum</RootNamespace>
-    <AssemblyName>ZMQ.Sum</AssemblyName>
+    <RootNamespace>ZMQ.PipeSort.Test</RootNamespace>
+    <AssemblyName>ZMQ.PipeSort.Test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -32,27 +31,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="clrzmq">
       <HintPath>..\packages\clrzmq.2.2.5\lib\clrzmq.dll</HintPath>
@@ -60,45 +38,66 @@
     <Reference Include="clrzmq-ext">
       <HintPath>..\packages\clrzmq.2.2.5\lib\clrzmq-ext.dll</HintPath>
     </Reference>
+    <Reference Include="Fasterflect">
+      <HintPath>..\lib\Fasterflect.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="NSubstitute">
+      <HintPath>..\packages\NSubstitute.1.4.3.0\lib\NET40\NSubstitute.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit-console-runner">
+      <HintPath>..\lib\nunit-console-runner.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.core">
+      <HintPath>..\lib\nunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.core.interfaces">
+      <HintPath>..\lib\nunit.core.interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.1\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.util">
+      <HintPath>..\lib\nunit.util.dll</HintPath>
+    </Reference>
+    <Reference Include="StoryTest">
+      <HintPath>..\lib\StoryTest.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="TestingTools">
+      <HintPath>..\lib\TestingTools.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Broadcast\SumadorBroadcastEsclavo.cs" />
-    <Compile Include="Broadcast\SumadorBroadcastMaestro.cs" />
+    <Compile Include="IntegrationTest.cs" />
+    <Compile Include="PipeMasterTest.cs" />
+    <Compile Include="PipeNodeTest.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SendRecv\SumadorSendRecvEsclavo.cs" />
-    <Compile Include="SendRecv\SumadorSendRecvMaestro.cs" />
-    <Compile Include="Proceso.cs" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
+    <Compile Include="TestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="app.config" />
     <None Include="libzmq.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ZMQ.Common\ZMQ.Common.csproj">
+      <Project>{9ed641ff-ff59-42e4-8fbb-d5e38eedf8d2}</Project>
+      <Name>ZMQ.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ZMQ.PipeSort\ZMQ.PipeSort.csproj">
+      <Project>{d5aba71c-4dbe-4679-96b8-329b53bbff36}</Project>
+      <Name>ZMQ.PipeSort</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

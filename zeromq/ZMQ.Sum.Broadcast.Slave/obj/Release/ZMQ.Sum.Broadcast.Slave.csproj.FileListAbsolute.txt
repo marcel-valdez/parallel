@@ -1,6 +1,0 @@
-D:\proyects\educational\paralela\zeromq\bin\libzmq.dll
-D:\proyects\educational\paralela\zeromq\bin\sum.broadcast.slave.pdb
-D:\proyects\educational\paralela\zeromq\ZMQ.Sum.Broadcast.Slave\obj\Release\ZMQ.Sum.Broadcast.Slave.csprojResolveAssemblyReference.cache
-D:\proyects\educational\paralela\zeromq\ZMQ.Sum.Broadcast.Slave\obj\Release\sum.broadcast.slave.pdb
-D:\proyects\educational\paralela\zeromq\bin\sum.broadcast.slave.dll
-D:\proyects\educational\paralela\zeromq\ZMQ.Sum.Broadcast.Slave\obj\Release\sum.broadcast.slave.dll

@@ -1,4 +1,0 @@
-D:\proyects\educational\paralela\zeromq\ZMQ.Common\bin\x86\Release\ZMQ.Common.dll
-D:\proyects\educational\paralela\zeromq\ZMQ.Common\bin\x86\Release\ZMQ.Common.pdb
-D:\proyects\educational\paralela\zeromq\ZMQ.Common\obj\x86\Release\ZMQ.Common.dll
-D:\proyects\educational\paralela\zeromq\ZMQ.Common\obj\x86\Release\ZMQ.Common.pdb

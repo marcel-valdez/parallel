@@ -24,7 +24,7 @@
             int[] actual = null;
 
             // Act
-            actual = Helper.ToIntArray(parameter);
+            actual = Common.Helper.ToIntArray(parameter);
 
             // Assert
             for(int index = 0; index < actual.Length; index++)

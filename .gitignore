@@ -10,3 +10,7 @@
 /zeromq/TestResults
 /zeromq/packages
 *.suo
+/zeromq/ZMQ.PipeSort/bin
+/zeromq/ZMQ.PipeSort/obj
+/zeromq/ZMQ.PipeSort.Test/obj
+/zeromq/ZMQ.PipeSort.Test/bin
