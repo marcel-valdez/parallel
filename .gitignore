@@ -10,7 +10,15 @@
 /zeromq/TestResults
 /zeromq/packages
 *.suo
+*.ncrunchsolution
 /zeromq/ZMQ.PipeSort/bin
 /zeromq/ZMQ.PipeSort/obj
 /zeromq/ZMQ.PipeSort.Test/obj
 /zeromq/ZMQ.PipeSort.Test/bin
+/CalculoPi/Release
+/CalculoPi/Debug
+/CalculoPi/ipch
+*.user
+/CalculoPi/CalculoPi/Debug
+/CalculoPi/CalculoPi/Release
+*.*~

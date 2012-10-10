@@ -8,7 +8,7 @@
     /// <summary>
     /// Esta clase se encarga de validar parámetros en formato string[]
     /// </summary>
-    public static class ParaTypeValidation
+    public static class ParamTypeValidation
     {
         
         /// <summary>
