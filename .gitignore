@@ -10,6 +10,7 @@
 /zeromq/TestResults
 /zeromq/packages
 *.suo
+*.gpState
 *.ncrunchsolution
 /zeromq/ZMQ.PipeSort/bin
 /zeromq/ZMQ.PipeSort/obj

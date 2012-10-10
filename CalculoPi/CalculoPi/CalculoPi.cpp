@@ -35,7 +35,7 @@ void execute_in_parallel()
     parameters = (int*)malloc(NUM_THREADS * sizeof(int));
 
     int i;	
-	printf("Parametros de ejecucion: cores disponibles= %d, intervalos= %d\n", NUM_THREADS, CANTIDAD_INTERVALOS);
+    printf("Parametros de ejecucion: cores disponibles= %d, intervalos= %d\n", NUM_THREADS, CANTIDAD_INTERVALOS);
     start = clock();
     InitializeCriticalSection(&cs);
     for(i = 0; i < NUM_THREADS; i++) {
