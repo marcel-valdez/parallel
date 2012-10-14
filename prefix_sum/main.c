@@ -20,9 +20,10 @@ void main(int num_args, char* args[]) {
 	MPI_Comm_size(MPI_COMM_WORLD, &proc_count);
     MPI_Comm_rank(MPI_COMM_WORLD, &my_proc_id);    
 	if (my_proc_id == 0) {
-		printf("Total processors: %d\n", proc_count);
+		printf("Total processors: %d, Total data size: %d\n", proc_count, DATA_SIZE);
 	}
 
+	MPI_Barrier(MPI_COMM_WORLD);
 	if (my_proc_id == 0) {
 		time_start = MPI_Wtime();
 	}
@@ -39,14 +40,14 @@ void main(int num_args, char* args[]) {
         
     /* Compute prefix sum */
     total_sum = 0;	
-    MPI_Scan(&local_sum, &total_sum, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD); 	
+    MPI_Scan(&local_sum, &total_sum, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
 	output[start] = data[start] + total_sum - local_sum;
     
 	if (start == 1) { output[start] += data[0]; }
     
 	reduce_results(output, data, start, data_slice_size);
 
-	/*MPI_Barrier(MPI_COMM_WORLD);*/
+	MPI_Barrier(MPI_COMM_WORLD);
 	if (my_proc_id == 0) {
 		time_end = MPI_Wtime();
 	}
@@ -55,7 +56,7 @@ void main(int num_args, char* args[]) {
 
 	if (my_proc_id == 0)
 	{
-		printf("\nTiempo ejecucion: %f milliseconds\n", (time_end-time_start) * 1000);
+		printf("\nTiempo ejecucion: %.1f microseconds\n", (time_end-time_start)*1000000);
 	}
 	
     /* Cleanup */
@@ -105,6 +106,6 @@ int calculate_slice_size(int my_proc_id, int total_procs, int total_data_size) {
         data_slice_size = total_data_size - (total_procs - 1) * data_slice_size;
     }
     
-    printf("Proc: %d, slice size: %d\n", my_proc_id, data_slice_size);
+    // printf("Proc: %d, slice size: %d\n", my_proc_id, data_slice_size);
     return data_slice_size;
 }
