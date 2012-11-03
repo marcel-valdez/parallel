@@ -23,3 +23,8 @@
 /CalculoPi/CalculoPi/Debug
 /CalculoPi/CalculoPi/Release
 *.*~
+/mult_matrices/ipch
+/mult_matrices/mult_matrices.opensdf
+/mult_matrices/mult_matrices.sdf
+/mult_matrices/mult_matrices/Debug
+/mult_matrices/mult_matrices/Release

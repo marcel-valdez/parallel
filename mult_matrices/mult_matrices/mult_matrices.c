@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-// #include <ia32intrin.h>
+#include <ia32intrin.h>
 #include "defines.h"
 void transpose(int size, float* matriz, float* trans);
 void multiplica(int size, float* matriz_a, float* matriz_b, float* matriz_c);
@@ -20,8 +20,8 @@ int main(int argc, char* argv[]) {
 	// print C
 	print_matriz(SIZE, C);
 
-	printf("Expected result:\n");
-	print_matriz(SIZE, EXPECT_C);
+	//printf("Expected result:\n");
+	//print_matriz(SIZE, EXPECT_C);
 	return 1;
 }
 
