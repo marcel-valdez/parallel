@@ -28,3 +28,15 @@
 /mult_matrices/mult_matrices.sdf
 /mult_matrices/mult_matrices/Debug
 /mult_matrices/mult_matrices/Release
+/prefix_sum/Debug
+/prefix_sum/Release
+/prefix_sum/x64
+/zeromq/Index.dat
+/zeromq/Storage.dat
+/CalculoPi/CalculoPi/Intel_SSA/
+/CalculoPi/CalculoPi/My Advisor XE Results - CalculoPi/
+/CalculoPi/CalculoPi/My Amplifier XE Results - CalculoPi/
+/CalculoPi/CalculoPi/My Inspector XE Results - CalculoPi/
+/prefix_sum/ipch
+/prefix_sum/sequential_prefix.c
+/prefix_sum/sequential_prefix.exe
