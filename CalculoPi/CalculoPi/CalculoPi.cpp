@@ -4,26 +4,29 @@
 #include <strsafe.h>
 #include "stdio.h"
 #include "time.h"
-#define CANTIDAD_INTERVALOS 10000000
+#define CANTIDAD_INTERVALOS 100000000
 //#define NUM_THREADS 2
 
+void calc_pi(int cantidad_intervalos);
 void execute_in_parallel();
 DWORD WINAPI partial_pi(LPVOID pArg);
 
 clock_t start;
 clock_t end;
+CRITICAL_SECTION cs;
+SYSTEM_INFO sysinfo;
+
 int NUM_THREADS;
+double base = 1.0 / CANTIDAD_INTERVALOS;
+double result = 0.0;
 
 int _tmain(int argc, _TCHAR* argv[])
 {	
     printf("Iniciando ejecucion en paralelo\n");
+    //calc_pi(CANTIDAD_INTERVALOS);
     execute_in_parallel();
     return(0);
 }
-
-CRITICAL_SECTION cs;
-double result = 0.0;
-SYSTEM_INFO sysinfo;
 
 void execute_in_parallel()
 {	    
@@ -53,8 +56,6 @@ void execute_in_parallel()
     free(hThread);
     free(parameters);
 }
-
-double base = 1.0 / CANTIDAD_INTERVALOS;
 
 DWORD WINAPI partial_pi(LPVOID pArg) 
 {
@@ -88,3 +89,23 @@ DWORD WINAPI partial_pi(LPVOID pArg)
 // LPVOID Paramteers (Long Pointer to Void): Parámetros del thread
 // DWORD CreationFlags (Double Word): ?
 // LPDWORD ThreadID (Long Pointer to Word): Número o ID del thread
+
+
+void calc_pi(int cantidad_intervalos) 
+{
+    int i = 0;	
+    double altura;
+    double acum = 0;    
+    double x = base;    
+    start = clock();
+
+    for(i = 0, acum = 0.0; i < cantidad_intervalos; i++, x += base) {
+        altura = 4.0/(1 + (x * x));
+        acum += base * altura;
+    }
+
+    end = clock();
+
+    printf("PI=%15.12lf (%ld ms)\n", acum, end - start);
+    
+}
