@@ -79,7 +79,9 @@
     <ClCompile Include="mult_matrices.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common_functions.h" />
     <ClInclude Include="defines.h" />
+    <ClInclude Include="mult_producto.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

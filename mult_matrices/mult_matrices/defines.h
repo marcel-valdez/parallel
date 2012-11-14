@@ -1,3 +1,6 @@
+#ifndef __DEFINES
+#define __DEFINES
+#include <Windows.h>
 #ifdef DEBUG
 	#define PDEBUG(X) printf(X)
 	#define PDEBUG1(X, X1) printf(X, X1)
@@ -12,6 +15,9 @@
 
 #define VECTORIZE
 #define SIZE 8
+#define NUM_PROCS 8
+#define NUM_WORKER 7
+HANDLE th_handles[NUM_WORKER];
 
 #ifdef VECTORIZE
 	#define INC 4
@@ -20,7 +26,6 @@
 	#define INC 1
 	#define VECTORIZE_THIS
 #endif
-
 
 float A[SIZE*SIZE] = {
 	1, 2, 3, 4, 5, 6, 7, 8,
@@ -65,3 +70,4 @@ float C[SIZE*SIZE];
 //	/*1,0*/ (1*1 + 2*1+ 3*1), /*1,1*/ (1*2+2*2+3*2), /*1,2*/ (1*3+2*3+3*3),
 //	/*2,0*/ (1*1 + 2*1+ 3*1), /*2,1*/ (1*2+2*2+3*2), /*2,2*/ (1*3+2*3+3*3)
 //};
+#endif
