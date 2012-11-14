@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="mult_matrices.c" />
+    <ClCompile Include="mult_renglon.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common_functions.h" />

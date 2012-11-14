@@ -1,6 +1,7 @@
 #ifndef __COMMON
 #define __COMMON
 #include <stdio.h>
+#include <time.h>
 #include "defines.h"
 
 void print_matriz(int size, float* matriz) {
@@ -31,5 +32,22 @@ void transpose(int size, float* source, float* trans) {
 	}
 
 	PDEBUG("finished transposing\n\n");
+}
+
+
+void ejecuta_prueba(
+	const char* granularidad,
+	float* matriz_a, 
+	float* matriz_b, 
+	float* matriz_c,
+	void (*funcion_producto)(int, float*, float*, float*)) {
+	clock_t start, end;
+	printf("Mutiplicando con granularidad: %s\n", granularidad);
+	start = clock();
+	funcion_producto(SIZE, matriz_a, matriz_b, matriz_c);
+	end = clock();
+	printf("Tiempo de ejecucion: %ld millis\n", end - start);
+	printf("Resultado AxB: \n");
+	print_matriz(SIZE, C);
 }
 #endif

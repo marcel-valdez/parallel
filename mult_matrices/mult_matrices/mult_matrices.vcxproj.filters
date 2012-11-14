@@ -29,5 +29,8 @@
     <ClCompile Include="mult_matrices.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mult_renglon.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
