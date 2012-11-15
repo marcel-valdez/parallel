@@ -65,7 +65,7 @@ static DWORD WINAPI multiplica_renglon(LPVOID arg) {
 		b_columna_i = &matriz_b[j*lado];			
 		renglon_c[j] = 0;
 
-		for(i = 0; i < lado; i+=INC) {
+		for(i = 0; i < lado; i++) {
 			renglon_c[j] += a_renglon_i[i] * b_columna_i[i];
 		}	
 	}

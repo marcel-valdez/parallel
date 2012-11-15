@@ -63,7 +63,7 @@ static DWORD WINAPI multiplica_punto(LPVOID arg) {
 	float* celda_c = params->celda_c;
 	int i;
 	
-	for(i = 0; i < lado; i+=INC) {
+	for(i = 0; i < lado; i++) {
 		(*celda_c) += renglon_a[i] * columna_b[i];
 	}	
 

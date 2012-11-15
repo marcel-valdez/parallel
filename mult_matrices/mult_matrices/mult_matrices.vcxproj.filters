@@ -24,13 +24,16 @@
     <ClInclude Include="mult_producto.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="mult_dynamic_worker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="mult_matrices.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="mult_renglon.h">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mult_matrices.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -13,7 +13,7 @@
 	#define PDEBUG3(X, X1, X2)
 #endif
 
-#define VECTORIZE
+//#define VECTORIZE
 #define SIZE 8
 #define NUM_PROCS 8
 #define NUM_WORKER 7
