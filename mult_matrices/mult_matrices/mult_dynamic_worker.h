@@ -31,7 +31,7 @@ void multiplica_dyn_producto(int size, float* matriz_a, float* matriz_b, float* 
 
 	for(i=0; i < size; i++) {		
 		c_renglon_i = &matriz_c[i*size];
-		// j salta de 2 en 2, 4 en 4, 8 en 8
+		// Se asume que j salta de 2 en 2, 4 en 4, 8 en 8
 		// Se asume que se trata de un ambiente en que renglones%number_of_processors == 0
 		for(j=0; j < size; j+=puntos_worker) {						
 			// Delegar cada punto a un procesador utilizando WorkPool pattern
@@ -69,20 +69,20 @@ void multiplica_dyn_producto(int size, float* matriz_a, float* matriz_b, float* 
 // altura del cuadrado
 static DWORD WINAPI multiplica_dyn_punto(LPVOID arg) {
 	DynPuntoParams* params = (DynPuntoParams*)arg;
-	int i, j = params->renglon, puntos = params->puntos;	
+	int i, j, puntos = params->puntos;	
 	int lado = params->lado;
 	float* matriz_a = params->matriz_a;
 	float* matriz_b = params->matriz_b;
 	float* seccion_c = params->seccion_c;
 	float* celda_c, *renglon_a, *columna_b;	
 
-	for(j = 0; j < params->puntos; j++) {
-		celda_c = &seccion_c[j];
-		renglon_a = &matriz_a[j*lado];
-		columna_b = &matriz_b[j*lado];
+	for(i = 0; i < params->puntos; i++) {
+		celda_c = &seccion_c[i];
+		renglon_a = &matriz_a[(i+params->renglon)*lado];
+		columna_b = &matriz_b[(i+params->columna)*lado];
 		*celda_c = 0;
-		for(i = params->columna; i < lado; i++) {
-			(*celda_c) += renglon_a[i] * columna_b[i];
+		for(j = 0; j < lado; j++) {
+			(*celda_c) += renglon_a[j] * columna_b[j];
 		}
 	}
 
