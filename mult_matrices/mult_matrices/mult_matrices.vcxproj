@@ -28,7 +28,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>Intel C++ Compiler XE 13.0</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler XE 12.0</PlatformToolset>
     <InterproceduralOptimization>true</InterproceduralOptimization>
     <UseIntelIPP>
     </UseIntelIPP>
@@ -86,20 +86,19 @@
       </DebugInformationFormat>
       <TreatWarningAsError>true</TreatWarningAsError>
       <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
-      <GenerateAlternateCodePaths>SSE3</GenerateAlternateCodePaths>
-      <UseProcessorExtensions>SSE3</UseProcessorExtensions>
+      <UseProcessorExtensions>HOST</UseProcessorExtensions>
       <AdditionalIncludeDirectories>C:\Program Files %28x86%29\Intel\Composer XE 2013\ipp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <InterproceduralOptimization>NoIPO</InterproceduralOptimization>
       <VectorizerDiagnosticLevel>LoopsSuccessVectorized1</VectorizerDiagnosticLevel>
       <OptimizationDiagnosticLevel>Disable</OptimizationDiagnosticLevel>
+      <GenerateAlternateCodePaths>SSE2</GenerateAlternateCodePaths>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>C:\Program Files (x86)\Intel\Composer XE 2013\ipp\lib\ia32\ipps.lib;C:\Program Files (x86)\Intel\Composer XE 2013\ipp\lib\ia32\ippvm.lib;C:\Program Files (x86)\Intel\Composer XE 2013\ipp\lib\ia32\ippcore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>C:\Program Files (x86)\Intel\ComposerXE-2011\ipp\lib\ia32\ipps.lib;C:\Program Files (x86)\Intel\ComposerXE-2011\ipp\lib\ia32\ippvm.lib;C:\Program Files (x86)\Intel\ComposerXE-2011\ipp\lib\ia32\ippcore.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
