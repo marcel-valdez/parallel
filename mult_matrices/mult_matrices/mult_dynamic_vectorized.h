@@ -78,8 +78,8 @@ static DWORD WINAPI multiplica_vec_punto(LPVOID p_arg) {
     int renglones = (arg.puntos+arg.columna)/arg.tamano;
     float *Ai, *Bj, *Ci;
     float temp[SIZE + 4];
-
     temp[0] = temp[1] = temp[2] = temp[3] = 0;
+
     for(i = 0; i < renglones; i++) {
         Ci = &arg.C[i*arg.tamano];
         inicio = i == 0 ? arg.columna : 0;
@@ -93,8 +93,7 @@ static DWORD WINAPI multiplica_vec_punto(LPVOID p_arg) {
                 temp[k+4] = temp[k] + Ai[k] * Bj[k];                
             }
 
-            Ci[j] = temp[SIZE + 0] + temp[SIZE + 1] + temp[SIZE + 2] + temp[SIZE + 3];
-
+            Ci[j] = temp[SIZE] + temp[SIZE + 1] + temp[SIZE + 2] + temp[SIZE + 3];
             cuenta++;
         }
     }

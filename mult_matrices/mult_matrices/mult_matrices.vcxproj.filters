@@ -27,9 +27,6 @@
     <ClInclude Include="mult_dynamic_worker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mult_dynamic_vectorized.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
