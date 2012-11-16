@@ -18,7 +18,7 @@ void print_matriz(int size, float matriz[SIZE][SIZE]) {
     printf("\n");
 }
 
-void transpose(int size, float source[SIZE][SIZE], float trans[SIZE][SIZE]) {	    
+void transpose(int size, float source[SIZE][SIZE], float trans[SIZE][SIZE]) {       
     int i, j;    
     float source_ij;    
     for(i = 0; i < size; i++) {

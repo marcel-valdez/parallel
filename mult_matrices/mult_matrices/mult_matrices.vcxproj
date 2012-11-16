@@ -21,6 +21,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>Intel C++ Compiler XE 13.0</PlatformToolset>
+    <InterproceduralOptimization>true</InterproceduralOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -28,6 +29,9 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>Intel C++ Compiler XE 13.0</PlatformToolset>
+    <InterproceduralOptimization>true</InterproceduralOptimization>
+    <UseIntelIPP>
+    </UseIntelIPP>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -50,12 +54,20 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeedHighLevel</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Parallelization>true</Parallelization>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <UseIntelOptimizedHeaders>true</UseIntelOptimizedHeaders>
+      <InterproceduralOptimization>MultiFile</InterproceduralOptimization>
+      <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>C:\Program Files (x86)\Intel\Composer XE 2013\ipp\lib\intel64\ipps.lib;C:\Program Files (x86)\Intel\Composer XE 2013\ipp\lib\intel64\ippvm.lib;C:\Program Files (x86)\Intel\Composer XE 2013\ipp\lib\intel64\ippcore.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -70,12 +82,24 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <Parallelization>true</Parallelization>
       <UseIntelOptimizedHeaders>true</UseIntelOptimizedHeaders>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
+      <GenerateAlternateCodePaths>SSE3</GenerateAlternateCodePaths>
+      <UseProcessorExtensions>SSE3</UseProcessorExtensions>
+      <AdditionalIncludeDirectories>C:\Program Files %28x86%29\Intel\Composer XE 2013\ipp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <InterproceduralOptimization>NoIPO</InterproceduralOptimization>
+      <VectorizerDiagnosticLevel>LoopsSuccessVectorized1</VectorizerDiagnosticLevel>
+      <OptimizationDiagnosticLevel>Disable</OptimizationDiagnosticLevel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>C:\Program Files (x86)\Intel\Composer XE 2013\ipp\lib\ia32\ipps.lib;C:\Program Files (x86)\Intel\Composer XE 2013\ipp\lib\ia32\ippvm.lib;C:\Program Files (x86)\Intel\Composer XE 2013\ipp\lib\ia32\ippcore.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -84,7 +108,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common_functions.h" />
+    <ClInclude Include="data.h" />
     <ClInclude Include="defines.h" />
+    <ClInclude Include="mult_dynamic_vectorized.h" />
     <ClInclude Include="mult_dynamic_worker.h" />
     <ClInclude Include="mult_producto.h" />
   </ItemGroup>
