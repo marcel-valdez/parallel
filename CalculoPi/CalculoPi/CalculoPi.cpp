@@ -21,7 +21,7 @@ double base = 1.0 / CANTIDAD_INTERVALOS;
 double result = 0.0;
 
 int _tmain(int argc, _TCHAR* argv[])
-{	
+{
     printf("Iniciando ejecucion en paralelo\n");
     //calc_pi(CANTIDAD_INTERVALOS);
     execute_in_parallel();
@@ -29,7 +29,7 @@ int _tmain(int argc, _TCHAR* argv[])
 }
 
 void execute_in_parallel()
-{	    
+{
     GetSystemInfo(&sysinfo);
     NUM_THREADS = sysinfo.dwNumberOfProcessors;
     HANDLE* hThread;
@@ -37,7 +37,7 @@ void execute_in_parallel()
     int* parameters;
     parameters = (int*)malloc(NUM_THREADS * sizeof(int));
 
-    int i;	
+    int i;
     printf("Parametros de ejecucion: cores disponibles= %d, intervalos= %d\n", NUM_THREADS, CANTIDAD_INTERVALOS);
     start = clock();
     InitializeCriticalSection(&cs);
@@ -45,7 +45,7 @@ void execute_in_parallel()
         parameters[i] = i;
         hThread[i] = CreateThread(NULL, 0, partial_pi, &parameters[i], 0, NULL);
     }
-    
+
     WaitForMultipleObjects(NUM_THREADS, hThread, TRUE, INFINITE);
     DeleteCriticalSection(&cs);
 
@@ -57,9 +57,9 @@ void execute_in_parallel()
     free(parameters);
 }
 
-DWORD WINAPI partial_pi(LPVOID pArg) 
+DWORD WINAPI partial_pi(LPVOID pArg)
 {
-    int i = 0;	
+    int i = 0;
     double altura;
     double acum;
     int* index_ptr = (int*)pArg;
@@ -73,7 +73,7 @@ DWORD WINAPI partial_pi(LPVOID pArg)
         // Se puede usar una variable global con todos los números
         // results[*index_ptr] = acum;
         // Pero si se hace esto, entonces va a pedir acceso a todo el arreglo results
-        // que está en L2, y ocupará cargarlo a L1		
+        // que está en L2, y ocupará cargarlo a L1
     }
 
     // Se puede agregar todo a un resultado común
@@ -84,19 +84,19 @@ DWORD WINAPI partial_pi(LPVOID pArg)
     return 0;
 }
 
-// 
-// LPVOID p: (Long Pointer to Thread): 
+//
+// LPVOID p: (Long Pointer to Thread):
 // LPVOID Paramteers (Long Pointer to Void): Parámetros del thread
 // DWORD CreationFlags (Double Word): ?
 // LPDWORD ThreadID (Long Pointer to Word): Número o ID del thread
 
 
-void calc_pi(int cantidad_intervalos) 
+void calc_pi(int cantidad_intervalos)
 {
-    int i = 0;	
+    int i = 0;
     double altura;
-    double acum = 0;    
-    double x = base;    
+    double acum = 0;
+    double x = base;
     start = clock();
 
     for(i = 0, acum = 0.0; i < cantidad_intervalos; i++, x += base) {
@@ -107,5 +107,5 @@ void calc_pi(int cantidad_intervalos)
     end = clock();
 
     printf("PI=%15.12lf (%ld ms)\n", acum, end - start);
-    
+
 }
