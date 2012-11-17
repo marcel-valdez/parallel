@@ -13,7 +13,11 @@
 	#define PDEBUG3(X, X1, X2)
 #endif
 
-#define SIZE 224//112//64//56*2*2//*2*2//8//16//56*2*2
+#ifndef MATRIX_SIZE
+#define SIZE 56
+#else
+#define SIZE MATRIX_SIZE
+#endif
 
 #if SIZE >= 8
 #define NUM_PROCS 8

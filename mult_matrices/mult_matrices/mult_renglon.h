@@ -1,74 +1,124 @@
-#include "defines.h"
-#include <windows.h>
+#ifndef __MULT_RENGLON_H
+#define __MULT_RENGLON_H
 
+#include "defines.h"
+#include <stdio.h>
 typedef struct {
-	int lado;
-	int renglon;
-	float* matriz_a;
-	float* matriz_b;
-	float* renglon_c;
+    int tamano;
+    float *Ai;
+    float (*B)[SIZE];
+    float *Ci;
 } RenglonParams;
 
-
 static DWORD WINAPI multiplica_renglon(LPVOID arg);
+static DWORD WINAPI multiplica_vec_renglon(LPVOID arg);
 
-RenglonParams th_renglon_params[NUM_WORKER];
+void multiplica_renglones_helper(
+    int size, 
+    float matriz_a[SIZE][SIZE], 
+    float matriz_b[SIZE][SIZE], 
+    float matriz_c[SIZE][SIZE],
+    BOOL vectorized);
+
+RenglonParams th_renglon_arg[NUM_WORKER];
+
+void multiplica_renglones(
+    int size, 
+    float matriz_a[SIZE][SIZE], 
+    float matriz_b[SIZE][SIZE], 
+    float matriz_c[SIZE][SIZE]) {
+        multiplica_renglones_helper(size, matriz_a, matriz_b, matriz_c, FALSE);
+}
+
+void multiplica_renglones_vec(
+    int size, 
+    float matriz_a[SIZE][SIZE], 
+    float matriz_b[SIZE][SIZE], 
+    float matriz_c[SIZE][SIZE]) {
+        multiplica_renglones_helper(size, matriz_a, matriz_b, matriz_c, TRUE);
+}
 
 // Multiplica 2 matrices particionando el trabajo por punto en la matriz resultante
 // Espera que la matriz b esté transpuesta
-void multiplica_renglones(int size, float* matriz_a, float* matriz_b, float* matriz_c) {	
-	int i, j;
-	float *a_renglon_i, *b_renglon_i, *c_renglon_i; 
-	int th_counter = 0, th_i = 0;	
+void multiplica_renglones_helper(
+    int size, 
+    float matriz_a[SIZE][SIZE], 
+    float matriz_b[SIZE][SIZE], 
+    float matriz_c[SIZE][SIZE],
+    BOOL vectorized) {
+        int i = 0, j = 0, th_counter = 0, th_i = 0;	
 
-	for(i=0; i < size; i++) {		
-		c_renglon_i = &matriz_c[i*size];
-		th_renglon_params[th_i].lado = size;
-		th_renglon_params[th_i].renglon = i;
-		th_renglon_params[th_i].matriz_a = matriz_a;
-		th_renglon_params[th_i].matriz_b = matriz_b;
-		th_renglon_params[th_i].renglon_c = c_renglon_i;
+        for(i=0; i < size; i++) {		
+            th_renglon_arg[th_i].tamano = size;            
+            th_renglon_arg[th_i].Ci = matriz_c[i];
+            th_renglon_arg[th_i].Ai = matriz_a[i];
+            th_renglon_arg[th_i].B = matriz_b;
 
-		// Delegar cada punto a un procesador utilizando WorkPool pattern			
-		// invoca hilo
-		th_handles[th_i] = CreateThread(
-			NULL, 0, multiplica_renglon, 
-			&th_renglon_params[th_i], 0, NULL);			
-		th_counter++;
+            // Delegar cada punto a un procesador utilizando WorkPool pattern			
+            // invoca hilo
+            if(vectorized) {
+                th_handles[th_i] = CreateThread(
+                    NULL, 0, multiplica_vec_renglon, 
+                    &th_renglon_arg[th_i], 0, NULL);			
+            } else {
+                th_handles[th_i] = CreateThread(
+                    NULL, 0, multiplica_renglon, 
+                    &th_renglon_arg[th_i], 0, NULL);			
+            }
 
-		// si todos los workers ya tienen trabajo
-		if(th_counter >= NUM_WORKER) {				
-			// Espera a a que alguno termine.
-			th_i = WaitForMultipleObjects(
-				NUM_WORKER, th_handles, 
-				FALSE, INFINITE);
-		} else {				
-			th_i = th_counter;
-		}
-	}	
+            // si todos los workers ya tienen trabajo
+            if(th_counter >= NUM_WORKER - 1) {				
+                // Espera a a que alguno termine.
+                th_i = WaitForMultipleObjects(
+                    NUM_WORKER, th_handles, 
+                    FALSE, INFINITE);
+            } else {				
+                th_counter++;
+                th_i = th_counter;
+            }
+        }
+
+        WaitForMultipleObjects(NUM_WORKER, th_handles, TRUE, INFINITE);
+}
+
+
+// calcula la celda en la posición (ren, col) de la matriz resultante
+// espera que la matriz sea cuadrada, y tamano representa la anchura y
+// altura del cuadrado
+static DWORD WINAPI multiplica_vec_renglon(LPVOID p_arg) {
+    RenglonParams arg = *(RenglonParams*)p_arg;
+    int j = 0, k = 0;
+    float *Bj, *Ai = arg.Ai, *Ci = arg.Ci;
+    float temp[SIZE + 4];
+    temp[0] = temp[1] = temp[2] = temp[3] = 0;
+    for(j=0; j < arg.tamano; j++) {     
+        Bj = arg.B[j];        
+        #pragma ivdep
+        for(k = 0;k < SIZE; k++) {
+            temp[k+4] = temp[k] + Ai[k] * Bj[k];
+        }
+        
+        Ci[j] = temp[SIZE+0] + temp[SIZE+1] + temp[SIZE+2] + temp[SIZE+3];
+    }
+
+    return 0;
 }
 
 // calcula la celda en la posición (ren, col) de la matriz resultante
-// espera que la matriz sea cuadrada, y lado representa la anchura y
+// espera que la matriz sea cuadrada, y tamano representa la anchura y
 // altura del cuadrado
-static DWORD WINAPI multiplica_renglon(LPVOID arg) {
-	RenglonParams* params = (RenglonParams*)arg;
-	int lado = params->lado;
-	float* matriz_a = params->matriz_a;
-	float* a_renglon_i;
-	float* b_columna_i;
-	float* matriz_b = params->matriz_b;
-	float* renglon_c = params->renglon_c;
-	int i, j;
-	for(j=0; j < lado; j++) {
-		a_renglon_i = &matriz_a[j*lado];			
-		b_columna_i = &matriz_b[j*lado];			
-		renglon_c[j] = 0;
+static DWORD WINAPI multiplica_renglon(LPVOID p_arg) {
+    RenglonParams arg = *(RenglonParams*)p_arg;
+    int j = 0, k = 0;
+    float *Bj, *Ai = arg.Ai, *Ci = arg.Ci;
+    for(j=0; j < arg.tamano; j++) {        
+        Bj = arg.B[j];
+        Ci[j] = 0;
+        for(k = 0; k < arg.tamano; k++) {
+            Ci[j] += Ai[k] * Bj[k];
+        }
+    }
 
-		for(i = 0; i < lado; i+=INC) {
-			renglon_c[j] += a_renglon_i[i] * b_columna_i[i];
-		}	
-	}
-
-	return 0;
+    return 0;
 }
+#endif
