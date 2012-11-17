@@ -66,6 +66,10 @@ void multiplica_producto_helper(int size, float A[SIZE][SIZE], float B[SIZE][SIZ
             }
         }
     }	
+
+    th_i = WaitForMultipleObjects(
+    NUM_WORKER, th_handles, 
+    TRUE, INFINITE);
 }
 
 
@@ -104,7 +108,7 @@ static DWORD WINAPI multiplica_punto_vec(LPVOID p_arg) {
     float temp[SIZE + 4];
     temp[0] = temp[1] = temp[2] = temp[3];
 #pragma ivdep
-    for(k = 0; k < lado; k++) {
+    for(k = 0; k < SIZE; k++) {
         temp[k+4] = temp[k] + Ai[k] * Bj[k];
     }
 

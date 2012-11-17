@@ -5,9 +5,17 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -91,7 +99,8 @@
       <InterproceduralOptimization>NoIPO</InterproceduralOptimization>
       <VectorizerDiagnosticLevel>LoopsSuccessVectorized1</VectorizerDiagnosticLevel>
       <OptimizationDiagnosticLevel>Disable</OptimizationDiagnosticLevel>
-      <GenerateAlternateCodePaths>SSE2</GenerateAlternateCodePaths>
+      <GenerateAlternateCodePaths>SSE42</GenerateAlternateCodePaths>
+      <StructMemberAlignment>Default</StructMemberAlignment>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -99,6 +108,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>C:\Program Files (x86)\Intel\ComposerXE-2011\ipp\lib\ia32\ipps.lib;C:\Program Files (x86)\Intel\ComposerXE-2011\ipp\lib\ia32\ippvm.lib;C:\Program Files (x86)\Intel\ComposerXE-2011\ipp\lib\ia32\ippcore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TargetMachine>MachineX86</TargetMachine>
+      <InterproceduralOptimization>false</InterproceduralOptimization>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -66,10 +66,13 @@ void secuencial_vec(int tamano, float A[SIZE][SIZE], float B[SIZE][SIZE], float 
     float temp[SIZE + 4];
     temp[0] = temp[1] = temp[2] = temp[3] = 0;
     for(i = 0; i < tamano; i++) {        
-        for(j = 0; j < tamano; j++) {        
+        for(j = 0; j < tamano; j++) {  
 #pragma ivdep
-            for(k = 0; k < tamano; k++) {
+            for(k = 0; k < SIZE; k+=4) {
                 temp[k+4] = temp[k] + A[i][k] * B[j][k];
+                temp[k+5] = temp[k+1] + A[i][k+1] * B[j][k+1];
+                temp[k+6] = temp[k+2] + A[i][k+2] * B[j][k+2];
+                temp[k+7] = temp[k+3] + A[i][k+3] * B[j][k+3];
             }
 
             C[i][j] = temp[SIZE] + temp[SIZE+1] + temp[SIZE+2] + temp[SIZE+3];

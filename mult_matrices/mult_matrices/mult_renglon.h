@@ -92,10 +92,13 @@ static DWORD WINAPI multiplica_vec_renglon(LPVOID p_arg) {
     float temp[SIZE + 4];
     temp[0] = temp[1] = temp[2] = temp[3] = 0;
     for(j=0; j < arg.tamano; j++) {     
-        Bj = arg.B[j];        
-        #pragma ivdep
-        for(k = 0;k < SIZE; k++) {
+        Bj = arg.B[j];
+#pragma ivdep
+        for(k = 0;k < SIZE; k+=4) {            
             temp[k+4] = temp[k] + Ai[k] * Bj[k];
+            temp[k+5] = temp[k+1] + Ai[k+1] * Bj[k+1];
+            temp[k+6] = temp[k+2] + Ai[k+2] * Bj[k+2];
+            temp[k+7] = temp[k+3] + Ai[k+3] * Bj[k+3];
         }
         
         Ci[j] = temp[SIZE+0] + temp[SIZE+1] + temp[SIZE+2] + temp[SIZE+3];
