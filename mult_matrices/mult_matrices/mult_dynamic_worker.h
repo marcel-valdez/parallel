@@ -116,15 +116,15 @@ void multiplica_dyn_producto_helper(int size, float matriz_a[SIZE][SIZE], float 
                     NULL, 0, multiplica_dyn_punto, 
                     &th_dyn_params[th_i], 0, NULL);
             }
-
+            /*
             // si todos los workers ya tienen trabajo			
-            if(th_counter >= num_worker - 1) {
+            if(FALSE) {//th_counter >= num_worker - 1) {
                 // Espera a a que alguno termine.
-                th_i = WaitForMultipleObjects(num_worker, th_handles, FALSE, INFINITE);
+                //th_i = WaitForMultipleObjects(num_worker, th_handles, FALSE, INFINITE);
             } else {
                 th_counter++;
                 th_i = th_counter;
-            }
+            }*/
         }
 
     }

@@ -11,12 +11,12 @@ void secuencial(int tamano, float A[SIZE][SIZE], float B[SIZE][SIZE], float C[SI
 void secuencial_vec(int tamano, float A[SIZE][SIZE], float B[SIZE][SIZE], float C[SIZE][SIZE]);
 
 int main(int argc, char* argv[]) {
-    printf("Multiplicacion de matrices %dx%d\n", SIZE, SIZE);
+    //printf("Multiplicacion de matrices %dx%d\n", SIZE, SIZE);
     if(SIZE < 16) {
-        printf("Matriz A:\n");
-        print_matriz(SIZE, A);
-        printf("Matriz B:\n");
-        print_matriz(SIZE, B);
+        //printf("Matriz A:\n");
+        //print_matriz(SIZE, A);
+        //printf("Matriz B:\n");
+        //print_matriz(SIZE, B);
     }
 
     transpose(SIZE, B, TRANS_B);        
@@ -24,25 +24,25 @@ int main(int argc, char* argv[]) {
     PDEBUG("Transpuesta B:\n");
     print_matriz(SIZE, TRANS_B);
 #endif
-    ejecuta_prueba("secuencial", A, TRANS_B, C, secuencial);
-    clear_matriz(SIZE, C);
-    ejecuta_prueba("secuencial:vectorized", A, TRANS_B, C, secuencial_vec);
-    clear_matriz(SIZE, C);
+    //ejecuta_prueba("secuencial", A, TRANS_B, C, secuencial);
+    //clear_matriz(SIZE, C);
+    //ejecuta_prueba("secuencial:vectorized", A, TRANS_B, C, secuencial_vec);
+    //clear_matriz(SIZE, C);
 
-    ejecuta_prueba("celda", A, TRANS_B, C, multiplica_producto);
-    clear_matriz(SIZE, C);
-    ejecuta_prueba("celda:vectorized", A, TRANS_B, C, multiplica_producto_vec);
-    clear_matriz(SIZE, C);
+    //ejecuta_prueba("celda", A, TRANS_B, C, multiplica_producto);
+    //clear_matriz(SIZE, C);
+    //ejecuta_prueba("celda:vectorized", A, TRANS_B, C, multiplica_producto_vec);
+    //clear_matriz(SIZE, C);
 
-    ejecuta_prueba("renglon", A, TRANS_B, C, multiplica_renglones);
-    clear_matriz(SIZE, C);
-    ejecuta_prueba("renglon:vectorized", A, TRANS_B, C, multiplica_renglones_vec);
-    clear_matriz(SIZE, C);
+    //ejecuta_prueba("renglon", A, TRANS_B, C, multiplica_renglones);
+    // clear_matriz(SIZE, C);
+    //ejecuta_prueba("renglon:vectorized", A, TRANS_B, C, multiplica_renglones_vec);
+    //clear_matriz(SIZE, C);
 
     ejecuta_prueba("celdas:dinamico", A, TRANS_B, C, multiplica_dyn_producto);    
-    clear_matriz(SIZE, C);
-    ejecuta_prueba("celdas:dinamico:vectorized", A, TRANS_B, C, multiplica_dyn_producto_vec);    
-    clear_matriz(SIZE, C);
+    //clear_matriz(SIZE, C);
+    //ejecuta_prueba("celdas:dinamico:vectorized", A, TRANS_B, C, multiplica_dyn_producto_vec);    
+    //clear_matriz(SIZE, C);
 
     return 0;
 }

@@ -36,16 +36,17 @@ void ejecuta_prueba(
     float matriz_b[SIZE][SIZE], 
     float matriz_c[SIZE][SIZE],
     void (*funcion_producto)(int, float[SIZE][SIZE], float[SIZE][SIZE], float[SIZE][SIZE])) {
-    clock_t start, end;
-    printf("Mutiplicando con granularidad: %s\n", granularidad);
-    start = clock();
+    //clock_t start, end;
+    //printf("Mutiplicando con granularidad: %s\n", granularidad);
+    //start = clock();
     funcion_producto(SIZE, matriz_a, matriz_b, matriz_c);
-    end = clock();
+    //end = clock();
     
-    printf("Tiempo de ejecucion: %ld miliseconds\n", end-start);
+    //printf("Tiempo de ejecucion: %ld miliseconds\n", end-start);
     if(SIZE < 16) {
-        printf("Resultado AxB: \n");
-        print_matriz(SIZE, C);
+        //printf("Resultado AxB: \n");
+        //print_matriz(SIZE, C);
+        ;
     }
 }
 

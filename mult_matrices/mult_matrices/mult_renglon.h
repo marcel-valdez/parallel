@@ -20,7 +20,7 @@ void multiplica_renglones_helper(
     float matriz_c[SIZE][SIZE],
     BOOL vectorized);
 
-RenglonParams th_renglon_arg[NUM_WORKER];
+RenglonParams th_renglon_arg[SIZE*SIZE];//NUM_WORKER];
 
 void multiplica_renglones(
     int size, 
@@ -67,7 +67,7 @@ void multiplica_renglones_helper(
             }
 
             // si todos los workers ya tienen trabajo
-            if(th_counter >= NUM_WORKER - 1) {				
+            if(FALSE){//th_counter >= NUM_WORKER - 1) {				
                 // Espera a a que alguno termine.
                 th_i = WaitForMultipleObjects(
                     NUM_WORKER, th_handles, 
