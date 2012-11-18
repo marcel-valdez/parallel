@@ -41,7 +41,8 @@ void ejecuta_prueba(
     start = clock();
     funcion_producto(SIZE, matriz_a, matriz_b, matriz_c);
     end = clock();
-    printf("Tiempo de ejecucion: %1.1ld millis\n", end - start);
+    
+    printf("Tiempo de ejecucion: %ld miliseconds\n", end-start);
     if(SIZE < 16) {
         printf("Resultado AxB: \n");
         print_matriz(SIZE, C);
