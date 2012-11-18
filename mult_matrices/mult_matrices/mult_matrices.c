@@ -3,27 +3,25 @@
 #include <ia32intrin.h>
 #include "defines.h"
 #include "common_functions.h"
-#include "mult_dynamic_worker.h"
+#include "mult_producto.h"
 
 void secuencial(int tamano, long int A[HEIGHTA][WIDTHA], long int B[WIDTHB][HEIGHTB], long int C[HEIGHTA][WIDTHB]);
 void secuencial_vec(int tamano, long int A[HEIGHTA][WIDTHA], long int B[WIDTHB][HEIGHTB], long int C[HEIGHTA][WIDTHB]);
 
 int main(int argc, char* argv[]) {
     printf("Multiplicacion de matrices %dx%d X %dx%d\n", HEIGHTA, WIDTHA, HEIGHTB, WIDTHB);
+#ifdef DEBUG
     if(HEIGHTA + WIDTHA + WIDTHB + HEIGHTB <= 64) {
         printf("Matriz A:\n");
         print_matriz(WIDTHA, HEIGHTA, &A[0][0]);
         printf("Matriz B:\n");
         print_matriz(WIDTHB, HEIGHTB, &B[0][0]);
     }
+#endif
         
     clear_matriz(C);    
-    transpose(B, TRANS_B);        
-#ifdef DEBUG
-    PDEBUG("Transpuesta B:\n");
-    print_matriz(SIZE, TRANS_B);
-#endif
-    ejecuta_prueba("celdas:dinamico:vectorized", A, TRANS_B, C, multiplica_dyn_producto_vec);        
+    transpose(B, TRANS_B);
+    ejecuta_prueba("celda:dinamico:vectorized", A, TRANS_B, C, multiplica_producto_vec);
 
     return 0;
 }

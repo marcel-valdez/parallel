@@ -3,6 +3,7 @@
 
 #include <ia32intrin.h>
 #include <Windows.h>
+
 #ifdef DEBUG
     #define PDEBUG(X) printf(X)
     #define PDEBUG1(X, X1) printf(X, X1)
@@ -15,20 +16,11 @@
     #define PDEBUG3(X, X1, X2)
 #endif
 
-#define HEIGHTA 128//224//224//112//64//56*2*2//*2*2//8//16//56*2*2
-#define WIDTHA 128
+#define HEIGHTA 16//224//224//112//64//56*2*2//*2*2//8//16//56*2*2
+#define WIDTHA 64
 
 #define HEIGHTB WIDTHA
-#define WIDTHB 128
-
-#if WIDTHA >= 8
-#define NUM_PROCS 8
-#else
-#define NUM_PROCS 5
-#endif
-
-#define NUM_WORKER (NUM_PROCS-1)
-HANDLE th_handles[NUM_WORKER];
+#define WIDTHB 8
 
 #include "data.h"
 

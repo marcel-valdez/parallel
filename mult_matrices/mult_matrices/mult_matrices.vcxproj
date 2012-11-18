@@ -141,7 +141,7 @@
     <ClInclude Include="common_functions.h" />
     <ClInclude Include="data.h" />
     <ClInclude Include="defines.h" />
-    <ClInclude Include="mult_dynamic_worker.h" />
+    <ClInclude Include="mult_producto.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -44,10 +44,12 @@ void ejecuta_prueba(
     end = clock();
     
     printf("Tiempo de ejecucion: %ld miliseconds\n", end-start);
+#ifdef DEBUG
     if(HEIGHTA + WIDTHB < 32 ) {
         printf("Resultado AxB: \n");
         print_matriz(HEIGHTA, WIDTHB, &C[0][0]);
     }
+#endif
 }
 
 void clear_matriz(long int matriz[HEIGHTA][WIDTHB]) {
