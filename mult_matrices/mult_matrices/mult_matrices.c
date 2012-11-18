@@ -23,15 +23,7 @@ int main(int argc, char* argv[]) {
     PDEBUG("Transpuesta B:\n");
     print_matriz(SIZE, TRANS_B);
 #endif
-    //ejecuta_prueba("secuencial", A, TRANS_B, C, secuencial);
-    //clear_matriz(C);
-    //ejecuta_prueba("secuencial:vectorized", A, TRANS_B, C, secuencial_vec);
-    //clear_matriz(C);
-
-    ejecuta_prueba("celdas:dinamico", A, TRANS_B, C, multiplica_dyn_producto);
-    clear_matriz(C);
-    // ejecuta_prueba("celdas:dinamico:vectorized", A, TRANS_B, C, multiplica_dyn_producto_vec);    
-    // clear_matriz(WIDTHA, HEIGHTB, (long int**)C);
+    ejecuta_prueba("celdas:dinamico:vectorized", A, TRANS_B, C, multiplica_dyn_producto_vec);        
 
     return 0;
 }

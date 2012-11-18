@@ -51,19 +51,7 @@ typedef struct {
 /// </summary>
 SYSTEM_INFO sysinfo;
 
-static DWORD WINAPI multiplica_dyn_punto(LPVOID arg);
 static DWORD WINAPI multiplica_dyn_punto_vec(LPVOID p_arg);
-
-void multiplica_dyn_producto_helper(long int matriz_a[HEIGHTA][WIDTHA], long int matriz_b[WIDTHB][HEIGHTB], long int matriz_c[HEIGHTA][WIDTHB], BOOL vectorized);
-
-void multiplica_dyn_producto(long int matriz_a[HEIGHTA][WIDTHA], long int matriz_b[WIDTHB][HEIGHTB], long int matriz_c[HEIGHTA][WIDTHB]) {	
-    multiplica_dyn_producto_helper(matriz_a, matriz_b, matriz_c, FALSE);
-}
-
-void multiplica_dyn_producto_vec(long int matriz_a[HEIGHTA][WIDTHA], long int matriz_b[WIDTHB][HEIGHTB], long int matriz_c[HEIGHTA][WIDTHB]) {	
-    multiplica_dyn_producto_helper(matriz_a, matriz_b, matriz_c, TRUE);
-}
-
 
 /// <summary>
 /// Multiplica 2 matrices particionando el trabajo por punto en la matriz
@@ -74,7 +62,7 @@ void multiplica_dyn_producto_vec(long int matriz_a[HEIGHTA][WIDTHA], long int ma
 /// <param name="matriz_a">La matriz a sumar A.</param>
 /// <param name="matriz_b">La matriz a sumar B.</param>
 /// <param name="matriz_c">La matriz resultante C.</param>
-void multiplica_dyn_producto_helper(long int matriz_a[HEIGHTA][WIDTHA], long int matriz_b[WIDTHB][HEIGHTB], long int matriz_c[HEIGHTA][WIDTHB], BOOL vectorized) {	
+void multiplica_dyn_producto_vec(long int matriz_a[HEIGHTA][WIDTHA], long int matriz_b[WIDTHB][HEIGHTB], long int matriz_c[HEIGHTA][WIDTHB]) {	
     int i,j = 0;
     int th_counter = 0, th_i = 0, num_worker = 0, puntos_worker = 0, inicio = 0;
     DynPuntoParams* th_dyn_params;
@@ -102,16 +90,10 @@ void multiplica_dyn_producto_helper(long int matriz_a[HEIGHTA][WIDTHA], long int
             th_dyn_params[th_i].renglon = i;
             th_dyn_params[th_i].columna = j;
 
-            // invoca hilo
-            if(vectorized) {
-                th_handles[th_i] = CreateThread(
-                    NULL, 0, multiplica_dyn_punto_vec, 
-                    &th_dyn_params[th_i], 0, NULL);
-            } else {
-                th_handles[th_i] = CreateThread(
-                    NULL, 0, multiplica_dyn_punto, 
-                    &th_dyn_params[th_i], 0, NULL);
-            }
+            // invoca hilo            
+            th_handles[th_i] = CreateThread(
+                NULL, 0, multiplica_dyn_punto_vec, 
+                &th_dyn_params[th_i], 0, NULL);
 
             // si todos los workers ya tienen trabajo			
             if(th_counter >= num_worker - 1) {
@@ -127,37 +109,6 @@ void multiplica_dyn_producto_helper(long int matriz_a[HEIGHTA][WIDTHA], long int
 
     WaitForMultipleObjects(num_worker, th_handles, TRUE, INFINITE);
     free(th_dyn_params);
-}
-
-/// <summary>
-/// Calcula DynPuntoParams.puntos celdas empezando en la posicion
-/// DynPuntoParams.renglon, DynPuntoParams.columna de la matriz resultante C
-/// espera que la matriz sea cuadrada, y tamano representa la anchura y altura
-/// del cuadrado.
-/// </summary>
-/// <param name="p_arg">Espera que sea un apuntador a un tipo DynPuntoParams.</param>
-/// <returns>Siempre regresa 0.</returns>
-static DWORD WINAPI multiplica_dyn_punto(LPVOID p_arg) {
-    DynPuntoParams arg = *(DynPuntoParams*)p_arg;
-    int i, j, k, puntos = arg.puntos, renglon, inicio, fin, cuenta = 0;
-    int renglones = (arg.puntos+arg.columna)/WIDTHB;
-    long int *Ci, *Ai, *Bj;
-    for(i = 0; i < renglones;i++) {
-        Ci = arg.C[i];
-        Ai = arg.A[i];
-        inicio = i == 0 ? arg.columna : 0;
-        fin = arg.puntos - cuenta < WIDTHB ? arg.puntos - cuenta : WIDTHB;
-        for(j = inicio; j < fin; j++) {            
-            Bj = arg.B[j];
-            for(k = 0; k < WIDTHA; k++) {
-                Ci[j] += Ai[k] * Bj[k];
-            }
-
-            cuenta++;
-        }
-    }
-
-    return 0;
 }
 
 

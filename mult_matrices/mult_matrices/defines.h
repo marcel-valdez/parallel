@@ -15,11 +15,11 @@
     #define PDEBUG3(X, X1, X2)
 #endif
 
-#define HEIGHTA 8//224//224//112//64//56*2*2//*2*2//8//16//56*2*2
-#define WIDTHA 16
+#define HEIGHTA 128//224//224//112//64//56*2*2//*2*2//8//16//56*2*2
+#define WIDTHA 128
 
 #define HEIGHTB WIDTHA
-#define WIDTHB 8
+#define WIDTHB 128
 
 #if WIDTHA >= 8
 #define NUM_PROCS 8
