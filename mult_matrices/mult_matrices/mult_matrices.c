@@ -17,9 +17,7 @@ int main(int argc, char* argv[]) {
         printf("Matriz B:\n");
         print_matriz(WIDTHB, HEIGHTB, &B[0][0]);
     }
-#endif
-        
-    clear_matriz(C);    
+#endif            
     transpose(B, TRANS_B);
     ejecuta_prueba("celda:dinamico:vectorized", A, TRANS_B, C, multiplica_producto_vec);
 

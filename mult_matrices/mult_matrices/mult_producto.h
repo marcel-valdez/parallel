@@ -12,21 +12,14 @@ static DWORD WINAPI multiplica_punto_vec(LPVOID arg);
 
 PuntoArg *th_arg;
 HANDLE *th_handles;
-SYSTEM_INFO sysinfo;
 
 // Multiplica 2 matrices particionando el trabajo por punto en la matriz resultante
 // Espera que la matriz b esté transpuesta
 void multiplica_producto_vec(long int A[HEIGHTA][WIDTHA], long int B[WIDTHB][HEIGHTB], long int C[HEIGHTA][WIDTHB]) {	
-    int i, j, num_worker, th_counter = 0, th_i = 0;	
-        
-    GetSystemInfo(&sysinfo);
-    num_worker = sysinfo.dwNumberOfProcessors - 1;
-    if(num_worker > HEIGHTA*WIDTHB) {
-        num_worker = HEIGHTA*WIDTHB;
-    }
+    int i, j, th_i = 0, th_counter = 0;	
 
-    th_arg = (PuntoArg*)malloc(sizeof(PuntoArg)*num_worker);
-    th_handles = (HANDLE*)malloc(sizeof(HANDLE)*num_worker);
+    th_arg = (PuntoArg*)malloc(sizeof(PuntoArg)*HEIGHTA*WIDTHB);
+    th_handles = (HANDLE*)malloc(sizeof(HANDLE)*HEIGHTA*WIDTHB);
 
     for(i=0; i < HEIGHTA; i++) {				
         for(j=0; j < WIDTHB; j++) {
@@ -37,36 +30,29 @@ void multiplica_producto_vec(long int A[HEIGHTA][WIDTHA], long int B[WIDTHB][HEI
 
             // invoca hilo
             th_handles[th_i] = CreateThread(
-                NULL, 0, multiplica_punto_vec, 
+                NULL, 0, multiplica_punto_vec,
                 &th_arg[th_i], 0, NULL);
 
-            th_counter++;
-
-            // si todos los workers ya tienen trabajo
-            if(th_counter >= num_worker) {		
-                // Espera a a que alguno termine.
-                th_i = WaitForMultipleObjects(num_worker, th_handles, FALSE, INFINITE);
-            } else {				
-                th_i = th_counter;
-            }
+            // Para ejecutar VTune Amplifier hubo que limitar los threads a 7 maximo,
+            // pero en ejecucion sin analisis, se pudo crear 128x128 threads.
+            // if(th_counter < 6) { th_i = ++th_counter; }
+            // else { th_i = WaitForMultipleObjects(th_counter, th_handles, FALSE, INFINITE); }
         }
     }
-
+    
     // Asegurarse de esperar a todos los threads.
-    WaitForMultipleObjects(num_worker, th_handles, TRUE, INFINITE);
-
+    WaitForMultipleObjects(th_counter, th_handles, TRUE, INFINITE);
+    
     free(th_arg);
     free(th_handles);
 }
 
-/// <summary>
+
 /// Utiliza vectorizacion para:
 /// Multiplicar el punto PuntoArg.Cij de la matriz resultante
 /// de la multiplicacion del renglon PuntoArg.Ai con el
 /// renglon PuntoArg.Bj, para una matriz de tamano PutoArg.tamano.
-/// </summary>
 /// <param name="p_arg">The p_arg.</param>
-/// <returns>DWORD.</returns>
 static DWORD WINAPI multiplica_punto_vec(LPVOID p_arg) {
     PuntoArg arg = *(PuntoArg*)p_arg;
     int k = 0;
