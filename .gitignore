@@ -44,3 +44,5 @@
 /mult_matrices/*.orig
 /mult_matrices/mult_matrices/x64
 /mult_matrices/x64
+*.exe
+/mult_matrices/mult_matrices/My*/
