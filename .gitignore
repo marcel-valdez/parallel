@@ -48,3 +48,6 @@
 /cuda_pi/*.obj
 /mult_matrices/mult_matrices_opencl/Debug/
 /mult_matrices/mult_matrices_opencl/ProfilerOutput/
+/mult_matrices/mult_matrices_opencl/docs/
+*.asm
+*.obj
