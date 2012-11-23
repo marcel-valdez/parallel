@@ -5,8 +5,6 @@ SET omp_compile=cl autoparvec_pi.c /Ox /Oi /Ot /nologo /W4 /WL /Qvec-report:2 /Q
 SET set_env="C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"
 SET set_env_2012="D:\programs\Microsoft Visual Studio 11.0\VC\vcvarsall.bat"
 
-GOTO BUILD_AUTOPARVEC
-
 ECHO ********************************
 ECHO Building cuda_pi
 %comspec% /c "%set_env% x64 && %cuda_compile%"
@@ -17,8 +15,6 @@ CALL cuda_pi.exe
 ECHO ----------------
 ECHO ********************************
 
-REM GOTO END
-REM "THE REST IS IGNORED FOR CONVENIENCE"
 REM IF EXIST secuencial_pi.exe GOTO RUN_SECUENCIAL
 
 :BUILD_SECUENCIAL

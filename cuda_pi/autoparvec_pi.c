@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "timer.h"
 
-double base = 0.0;
+double base = 0;
 double four_base;
 const double PI =  3.141592653589793;
 double partials[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -22,7 +22,8 @@ int main()
 
 void run_pi_calc(long long int intervalos)
 {
-    double pi = 0.0, elapsed;
+    double pi = 0;
+    double elapsed;
 
     base = 1.0 / intervalos;
     StartTimer();
@@ -55,7 +56,7 @@ double calc_pi(long long int cantidad_intervalos, double base)
 
     // Se integran los resultados de los 8 hilos
     return partials[0] + partials[1] + partials[2] + partials[3]
-           + partials[4] + partials[5] + partials[6] + partials[7];
+         + partials[4] + partials[5] + partials[6] + partials[7];
 }
 
 __forceinline void calc_interval(int t_i, long long int th_interval, double base)
@@ -71,7 +72,7 @@ __forceinline void calc_interval(int t_i, long long int th_interval, double base
         // Se crea un for interno para que se vectorize de 4 en 4
         for (j = 0; j < 4; j++)
         {
-            vector[j] =  4.0 / (1 + ((x + base * j) * (x + base * j)));
+            vector[j] =  4.0 / (1.0 + ((x + base * j) * (x + base * j)));
         }
 
         // Se realiza una suma de estos 4 valores.

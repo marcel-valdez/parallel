@@ -8,7 +8,7 @@
 
 // MACROS
 // multiprocessor cores * numero de multiprocessors
-#define GRID_SIZE (48*2)
+#define GRID_SIZE (2*48)
 // streaming thread count
 #define BLOCK_SIZE (32*8)
 // total thread count

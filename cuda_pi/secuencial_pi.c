@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "timer.h"
 
-double base = 0.0;
+double base = 0;
 const double PI =  3.141592653589793;
 
 double calc_pi(long long int cantidad_intervalos, double base);
@@ -19,7 +19,8 @@ int main()
 
 void run_pi_calc(long long int intervalos)
 {    
-    double pi = 0.0, elapsed;
+    double pi = 0;
+    double elapsed;
 
     base = 1.0/intervalos;
     StartTimer();
@@ -37,10 +38,10 @@ void run_pi_calc(long long int intervalos)
 double calc_pi(long long int cantidad_intervalos, double base)
 {
     long long int i = 0;
-    double acum = 0.0;
+    double acum = 0;
     double x = base;
     for(i = 0; i < cantidad_intervalos; i++) {        
-        acum += 4.0/(1 + (x * x));
+        acum += 4/(1 + (x * x));
         x += base;
     }
     
