@@ -1,3 +1,14 @@
+# By extension
+*.suo
+*.gpState
+*.ncrunchsolution
+*.user
+*.*~
+*.exe
+*.asm
+*.obj
+
+# By example
 /zeromq/bin/*
 /zeromq/ZMQ.Sum/obj
 /zeromq/ZMQ.Sum/bin
@@ -9,45 +20,45 @@
 /zeromq/ZMQ.Sum.SlaveRunner/bin
 /zeromq/TestResults
 /zeromq/packages
-*.suo
-*.gpState
-*.ncrunchsolution
 /zeromq/ZMQ.PipeSort/bin
 /zeromq/ZMQ.PipeSort/obj
 /zeromq/ZMQ.PipeSort.Test/obj
 /zeromq/ZMQ.PipeSort.Test/bin
+/zeromq/Index.dat
+/zeromq/Storage.dat
+
 /CalculoPi/Release
 /CalculoPi/Debug
 /CalculoPi/ipch
-*.user
 /CalculoPi/CalculoPi/Debug
 /CalculoPi/CalculoPi/Release
-*.*~
+/CalculoPi/CalculoPi/Intel_SSA/
+/CalculoPi/CalculoPi/My Advisor XE Results - CalculoPi/
+/CalculoPi/CalculoPi/My Amplifier XE Results - CalculoPi/
+/CalculoPi/CalculoPi/My Inspector XE Results - CalculoPi/
+
 /mult_matrices/ipch
 /mult_matrices/mult_matrices.opensdf
 /mult_matrices/mult_matrices.sdf
 /mult_matrices/mult_matrices/Debug
 /mult_matrices/mult_matrices/Release
-/prefix_sum/Debug
-/prefix_sum/Release
-/prefix_sum/x64
-/zeromq/Index.dat
-/zeromq/Storage.dat
-/CalculoPi/CalculoPi/Intel_SSA/
-/CalculoPi/CalculoPi/My Advisor XE Results - CalculoPi/
-/CalculoPi/CalculoPi/My Amplifier XE Results - CalculoPi/
-/CalculoPi/CalculoPi/My Inspector XE Results - CalculoPi/
-/prefix_sum/ipch
-/prefix_sum/sequential_prefix.exe
+
 /mult_matrices/Debug
 /mult_matrices/*.orig
 /mult_matrices/mult_matrices/x64
 /mult_matrices/x64
-*.exe
 /mult_matrices/mult_matrices/My*/
-/cuda_pi/*.obj
 /mult_matrices/mult_matrices_opencl/Debug/
 /mult_matrices/mult_matrices_opencl/ProfilerOutput/
 /mult_matrices/mult_matrices_opencl/docs/
-*.asm
-*.obj
+
+/prefix_sum/Debug
+/prefix_sum/Release
+/prefix_sum/x64
+/prefix_sum/ipch
+/prefix_sum/sequential_prefix.exe
+/prefix_sum/prefix_sum.aps
+/prefix_sum/prefix_sum.sdf
+
+
+/cuda_pi/*.obj
