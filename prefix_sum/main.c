@@ -56,7 +56,7 @@ void main(int num_args, char* args[]) {
 
 	if (my_proc_id == 0)
 	{
-		printf("\nTiempo ejecucion: %.1f microseconds\n", (time_end-time_start)*1000000);
+		printf("\nExecution time: %.1f microseconds\n", (time_end-time_start)*1000000);
 	}
 	
     /* Cleanup */
@@ -97,7 +97,7 @@ int calculate_sum(int* data, int start, int count) {
 
 int calculate_slice_size(int my_proc_id, int total_procs, int total_data_size) {	
     int data_slice_size;
-    /* Dado que se trata de prefix sum, se ignora el primer valor, y en base a 1 a N se determina el data slice */
+    /* The first value is ignored */
     total_data_size -= 1;
     /* calculate size of data slice current process should use */	
     data_slice_size = total_data_size / total_procs;
